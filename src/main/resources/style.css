@@ -1,0 +1,60 @@
+/* Общий фон окна */
+.root {
+    -fx-background-color: #9d69db; /* Светло-серый фон #c7c7c7 */
+    -fx-font-size: 16px;           /* Удобный размер текста */
+    -fx-font-family: "Tahoma"; /* Шрифт по умолчанию */
+}
+
+/* Комбинированные списки (ComboBox) */
+.combo-box {
+    -fx-background-color: #ffffff; /* Белый фон */
+    -fx-text-fill: #2d2f33;        /* Темно-серый текст */
+    -fx-border-color: #c3c4c8;     /* Светло-серый контур */
+    -fx-border-radius: 5;          /* Скругленные углы */
+    -fx-background-radius: 5;
+}
+
+.combo-box-popup {
+    -fx-background-color: #ffffff; /* Белый фон выпадающего списка */
+    -fx-text-fill: #2d2f33;        /* Темно-серый текст */
+}
+
+/* Текстовые поля */
+.text-field {
+    -fx-background-color: #ffffff; /* Белый фон */
+    -fx-text-fill: #2d2f33;        /* Темно-серый текст */
+    -fx-border-color: #c3c4c8;     /* Светло-серый контур */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+/* Метки (Label) */
+.label {
+    -fx-text-fill: #2d2f33; /* Темно-серый текст */
+}
+
+/* Кнопки */
+.button {
+    -fx-background-color: #81f497; /* Светло-зеленый фон кнопки */
+    -fx-text-fill: #2d2f33;        /* Белый текст */
+    -fx-border-color: #57d381;     /* Более темный зеленый контур */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;         /* Жирный текст */
+}
+
+.button:hover {
+    -fx-background-color: #57d381; /* Темно-зеленый фон при наведении */
+    -fx-text-fill: #ffffff;        /* Белый текст */
+}
+
+/* Отступы и выравнивание для элементов */
+.hbox {
+    -fx-spacing: 10px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.vbox {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+}
