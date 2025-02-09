@@ -73,8 +73,9 @@ public class ProductService {
         modaAmMap.put(27201, "2,7л A");
         modaAmMap.put(27202, "9л A");
         modaAmMap.put(27203, "0,9л TR");
-        moda7Map.put(27204, "2,7л TR");
-        moda7Map.put(27205, "9л TR");
+        modaAmMap.put(27204, "2,7л TR");
+        modaAmMap.put(27205, "9л TR");
+
         eskaroInteriorPaints.put("Moda Absolut Matt", new Product(modaAmMap));
 
         Map<Integer, String> akritMap = new LinkedHashMap<>();
@@ -177,63 +178,63 @@ public class ProductService {
         dekor.put("Aura Dekor Grund", new Product(grundMap));
 
         Map<Integer, String> map15 = new LinkedHashMap<>();
-        map15.put(16272, "8кг");
-        map15.put(16044, "25кг");
+        map15.put(41833, "8кг");
+        map15.put(41821, "25кг");
         dekor.put("Aura Dekor Putz Шуба 1,5мм", new Product(map15));
 
         Map<Integer, String> map25 = new LinkedHashMap<>();
-        map25.put(16273, "8кг");
-        map25.put(16045, "25кг");
+        map25.put(41834, "8кг");
+        map25.put(41822, "25кг");
         dekor.put("Aura Dekor Putz Шуба 2,5мм", new Product(map25));
 
         Map<Integer, String> putzKor2mm = new LinkedHashMap<>();
-        putzKor2mm.put(16270, "8кг");
-        putzKor2mm.put(16965, "25кг");
+        putzKor2mm.put(41831, "8кг");
+        putzKor2mm.put(41819, "25кг");
         dekor.put("Aura Dekor Putz Короед 2мм", new Product(putzKor2mm));
 
         Map<Integer, String> putzKor3mm = new LinkedHashMap<>();
-        putzKor3mm.put(16271, "8кг");
-        putzKor3mm.put(16043, "25кг");
+        putzKor3mm.put(41832, "8кг");
+        putzKor3mm.put(41820, "25кг");
         dekor.put("Aura Dekor Putz Короед 3мм", new Product(putzKor3mm));
 
         Map<Integer, String> structur = new LinkedHashMap<>();
-        structur.put(22881, "2,5л");
-        structur.put(22882, "10л");
+        structur.put(41839, "2,5л");
+        structur.put(41840, "10л");
         dekor.put("Aura Dekor Structur", new Product(structur));
 
         Map<Integer, String> primer = new LinkedHashMap<>();
-        primer.put(39174, "1,4кг");
-        primer.put(39175, "3,65кг");
+        primer.put(41871, "1,4кг");
+        primer.put(41872, "3,65кг");
         dekor.put("Aura Dekor Primer", new Product(primer));
 
         Map<Integer, String> mattLack = new LinkedHashMap<>();
-        mattLack.put(39184, "1кг");
+        mattLack.put(41881, "1кг");
         dekor.put("Aura Dekor Matt Lack", new Product(mattLack));
 
         Map<Integer, String> atlas = new LinkedHashMap<>();
-        atlas.put(39176, "1кг");
-        atlas.put(39177, "2,5кг");
+        atlas.put(41873, "1кг");
+        atlas.put(41874, "2,5кг");
         dekor.put("Aura Dekor Atlas", new Product(atlas));
 
         Map<Integer, String> kristall = new LinkedHashMap<>();
-        kristall.put(39178, "1кг");
-        kristall.put(39179, "2,5кг");
+        kristall.put(41875, "1кг");
+        kristall.put(41876, "2,5кг");
         dekor.put("Aura Dekor Kristall", new Product(kristall));
 
         Map<Integer, String> nubuck = new LinkedHashMap<>();
-        nubuck.put(39183, "1кг");
+        nubuck.put(41880, "1кг");
         dekor.put("Aura Dekor Nubuck", new Product(nubuck));
 
         Map<Integer, String> universum = new LinkedHashMap<>();
-        universum.put(39182, "8кг");
+        universum.put(41879, "8кг");
         dekor.put("Aura Dekor Universum", new Product(universum));
 
         Map<Integer, String> grotto = new LinkedHashMap<>();
-        grotto.put(39180, "15кг");
+        grotto.put(41877, "15кг");
         dekor.put("Aura Dekor Grotto", new Product(grotto));
 
         Map<Integer, String> loft = new LinkedHashMap<>();
-        loft.put(39181, "15кг");
+        loft.put(41878, "15кг");
         dekor.put("Aura Dekor Loft", new Product(loft));
 
         productData.put("Декоративные покрытия Aura Dekor", dekor);

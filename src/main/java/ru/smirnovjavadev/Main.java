@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
+
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -28,8 +29,6 @@ public class Main extends Application {
 
         // Заполнение первого ComboBox (типы ЛКМ)
         typeComboBox.setItems(FXCollections.observableArrayList(productData.keySet()));
-        typeComboBox.setStyle("-fx-font-size: 20px;");
-        productComboBox.setStyle("-fx-font-size: 20px;");
 
         // Обработка выбора типа ЛКМ
         typeComboBox.setOnAction(e -> {
@@ -86,8 +85,8 @@ public class Main extends Application {
 
         // Создание сцены и отображение
         Scene scene = new Scene(layout);
-        scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
-        primaryStage.setTitle("Продукты и фасовки");
+        scene.getStylesheets().add(getClass().getResource("/greystyle.css").toExternalForm());
+        primaryStage.setTitle("Колеровочные баркоды Eskaro");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
