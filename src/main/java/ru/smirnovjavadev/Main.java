@@ -49,28 +49,7 @@ public class Main extends Application {
                 if (product != null) {
                     // Заполнение detailsBox: строки из ID, фасовки и кнопки "Копировать"
                     for (Map.Entry<Integer, String> entry : product.getProductMap().entrySet()) {
-                        Integer id = entry.getKey();
-                        String volume = entry.getValue();
-
-                        // TextField для ID
-                        TextField idField = new TextField(id.toString());
-                        idField.setEditable(false); // Запрещаем редактирование
-                        idField.setPrefWidth(80);
-
-                        // Label для фасовки
-                        Label volumeLabel = new Label(volume);
-
-                        // Кнопка "Копировать"
-                        Button copyButton = new Button("Копировать");
-                        copyButton.setOnAction(copyEvent -> {
-                            Clipboard clipboard = Clipboard.getSystemClipboard();
-                            ClipboardContent content = new ClipboardContent();
-                            content.putString(id.toString()); // Копируем ID в буфер обмена
-                            clipboard.setContent(content);
-                        });
-
-                        // Объединяем элементы в строку
-                        HBox row = new HBox(10, copyButton, idField, volumeLabel);
+                        HBox row = getBox(entry);
                         row.setAlignment(Pos.CENTER_LEFT); // Выравниваем элементы по вертикали
                         detailsBox.getChildren().add(row);
                     }
@@ -90,6 +69,32 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+    }
+
+    private static HBox getBox(Map.Entry<Integer, String> entry) {
+        Integer id = entry.getKey();
+        String volume = entry.getValue();
+
+        // TextField для ID
+        TextField idField = new TextField(id.toString());
+        idField.setEditable(false); // Запрещаем редактирование
+        idField.setPrefWidth(80);
+
+        // Label для фасовки
+        Label volumeLabel = new Label(volume);
+
+        // Кнопка "Копировать"
+        Button copyButton = new Button("Копировать");
+        copyButton.setOnAction(copyEvent -> {
+            Clipboard clipboard = Clipboard.getSystemClipboard();
+            ClipboardContent content = new ClipboardContent();
+            content.putString(id.toString()); // Копируем ID в буфер обмена
+            clipboard.setContent(content);
+        });
+
+        // Объединяем элементы в строку
+        HBox row = new HBox(10, copyButton, idField, volumeLabel);
+        return row;
     }
 
     public static void main(String[] args) {
