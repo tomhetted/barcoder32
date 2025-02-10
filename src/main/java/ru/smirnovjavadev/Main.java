@@ -49,7 +49,7 @@ public class Main extends Application {
                 if (product != null) {
                     // Заполнение detailsBox: строки из ID, фасовки и кнопки "Копировать"
                     for (Map.Entry<Integer, String> entry : product.getProductMap().entrySet()) {
-                        HBox row = getBox(entry);
+                        HBox row = getRow(entry);
                         row.setAlignment(Pos.CENTER_LEFT); // Выравниваем элементы по вертикали
                         detailsBox.getChildren().add(row);
                     }
@@ -71,7 +71,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private static HBox getBox(Map.Entry<Integer, String> entry) {
+    private static HBox getRow(Map.Entry<Integer, String> entry) {
         Integer id = entry.getKey();
         String volume = entry.getValue();
 
