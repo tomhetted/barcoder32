@@ -28,7 +28,7 @@ public class ProductService {
         mattlatexMap.put(22885, "0,9л А");
         mattlatexMap.put(22886, "2,7л А");
         mattlatexMap.put(22887, "9л А");
-        mattlatexMap.put(22888, "0,9 TR");
+        mattlatexMap.put(22888, "0,9л TR");
         mattlatexMap.put(22889, "2,7л TR");
         mattlatexMap.put(22890, "9л TR");
         auraInteriorPaints.put("Mattlatex", new Product(mattlatexMap));
