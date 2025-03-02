@@ -5,13 +5,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
         // Получение данных через ProductService
-        Map<String, Map<String, Product>> productData = ProductService.getProducts();
+        Map<String, Map<String, Product>> productData = ProductRepository.getProducts();
 
         // Создание интерфейса
         BarcoderView view = new BarcoderView();
@@ -21,7 +22,7 @@ public class Main extends Application {
 
         // Создание сцены и отображение
         Scene scene = new Scene(view.getLayout());
-        scene.getStylesheets().add(getClass().getResource("/greystyle.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/greystyle.css")).toExternalForm());
         primaryStage.setTitle("Колеровочные баркоды Eskaro");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);

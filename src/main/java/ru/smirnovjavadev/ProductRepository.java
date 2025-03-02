@@ -3,7 +3,7 @@ package ru.smirnovjavadev;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class ProductService {
+public class ProductRepository {
 
     public static Map<String, Map<String, Product>> getProducts() {
         // Основная структура: тип -> продукт -> фасовки
