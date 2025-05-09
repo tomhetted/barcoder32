@@ -1,0 +1,82 @@
+/* Общий фон окна */
+.root {
+    -fx-background-color: #dfeef5; /* Светло-голубовато-серый */
+    -fx-font-size: 16px;
+    -fx-font-family: "Tahoma";
+}
+
+/* Комбинированные списки (ComboBox) */
+.combo-box {
+    -fx-background-color: #b3dee2; /* Светлый бирюзовый */
+    -fx-text-fill: #2a3b47;        /* Темно-серый текст */
+    -fx-border-color: #87cfd1;     /* Чуть темнее бирюзовый контур */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 20px;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: #b3dee2;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #2a3b47;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #b3dee2;
+    -fx-border-color: #87cfd1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #b3dee2;
+    -fx-text-fill: #2a3b47;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #87cfd1;
+    -fx-text-fill: #ffffff;
+}
+
+/* Текстовые поля */
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2a3b47;
+    -fx-border-color: #c4d0d6; /* Светло-серый контур */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+/* Метки (Label) */
+.label {
+    -fx-font-size: 20px;
+    -fx-text-fill: #6faab8; /* Спокойный бирюзовый */
+}
+
+/* Кнопки */
+.button {
+    -fx-background-color: #b3dee2;
+    -fx-text-fill: #2a3b47;
+    -fx-border-color: #87cfd1;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #87cfd1;
+    -fx-text-fill: #ffffff;
+}
+
+/* Отступы и выравнивание для элементов */
+.hbox {
+    -fx-spacing: 10px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.vbox {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+}

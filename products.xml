@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+    <!-- Интерьерные краски Aura -->
+    <category name="Интерьерные краски Aura">
+        <product name="Nord">
+            <item id="17113">0,9л</item>
+            <item id="17114">2,7л</item>
+            <item id="17115">9л</item>
+        </product>
+        <product name="Fjord">
+            <item id="17116">0,9л</item>
+            <item id="17117">2,7л</item>
+            <item id="17118">9л</item>
+        </product>
+        <product name="Mattlatex">
+            <item id="22885">0,9л А</item>
+            <item id="22886">2,7л А</item>
+            <item id="22887">9л А</item>
+            <item id="22888">0,9л TR</item>
+            <item id="22889">2,7л TR</item>
+            <item id="22890">9л TR</item>
+        </product>
+        <product name="Golfström">
+            <item id="17119">0,9л</item>
+            <item id="17121">2,7л</item>
+            <item id="17122">9л</item>
+        </product>
+        <product name="Satin">
+            <item id="17124">0,9л</item>
+            <item id="15968">2,7л</item>
+            <item id="15969">9л</item>
+        </product>
+    </category>
+
+    <!-- Интерьерные краски Eskaro -->
+    <category name="Интерьерные краски Eskaro">
+        <product name="Moda 3">
+            <item id="27022">0,9л A</item>
+            <item id="27023">2,7л A</item>
+            <item id="27077">9л A</item>
+            <item id="27206">0,9л TR</item>
+            <item id="27207">2,7л TR</item>
+            <item id="27208">9л TR</item>
+        </product>
+        <product name="Moda 7">
+            <item id="27024">0,9л A</item>
+            <item id="27025">2,7л A</item>
+            <item id="27078">9л A</item>
+            <item id="27209">0,9л TR</item>
+            <item id="27210">2,7л TR</item>
+            <item id="27211">9л TR</item>
+        </product>
+        <product name="Moda Absolut Matt">
+            <item id="27200">0,9л A</item>
+            <item id="27201">2,7л A</item>
+            <item id="27202">9л A</item>
+            <item id="27203">0,9л TR</item>
+            <item id="27204">2,7л TR</item>
+            <item id="27205">9л TR</item>
+        </product>
+        <product name="Akrit">
+            <item id="38682">0,9л A</item>
+            <item id="38683">2,7л A</item>
+            <item id="38684">9л A</item>
+            <item id="38685">0,9л TR</item>
+            <item id="38686">2,7л TR</item>
+        </product>
+    </category>
+
+    <!-- Фасадные краски Aura и Eskaro -->
+    <category name="Фасадные краски Aura и Eskaro">
+        <product name="Aura Expo">
+            <item id="19498">2,7л A</item>
+            <item id="19499">9л A</item>
+            <item id="19579">2,7л TR</item>
+            <item id="19497">9л TR</item>
+        </product>
+        <product name="Aura Mansarda">
+            <item id="40516">0,9л A</item>
+            <item id="40517">2,5л A</item>
+            <item id="40518">9л A</item>
+            <item id="40519">0,9л TR</item>
+            <item id="40520">2,5л TR</item>
+            <item id="40521">9л TR</item>
+        </product>
+        <product name="Eskaro Veranda">
+            <item id="40533">0,95л A</item>
+            <item id="40534">2,85л A</item>
+            <item id="22555">9,5л A</item>
+            <item id="40535">0,9л TR</item>
+            <item id="40536">2,7л TR</item>
+            <item id="40537">9л TR</item>
+        </product>
+    </category>
+
+    <!-- Эмали Aura и Eskaro -->
+    <category name="Эмали Aura и Eskaro">
+        <product name="Aura Remix">
+            <item id="19825">0,9л A</item>
+            <item id="19826">2,4л A</item>
+            <item id="23292">0,9л TR</item>
+            <item id="23293">2,4л TR</item>
+        </product>
+        <product name="Aura Thermo">
+            <item id="22952">0,45л</item>
+            <item id="17127">0,9л</item>
+        </product>
+        <product name="Eskaro Mööblivärv">
+            <item id="40538">0,45л A</item>
+            <item id="25045">0,9л A</item>
+            <item id="40539">0,45л TR</item>
+            <item id="40540">0,9л TR</item>
+        </product>
+    </category>
+
+    <!-- Лаки, масла и лазури Aura и Eskaro -->
+    <category name="Лаки, масла и лазури Aura и Eskaro">
+        <product name="Aura Interior Lack">
+            <item id="25048">1л</item>
+            <item id="25049">2,5л</item>
+        </product>
+        <product name="Eskaro Marine Lakk 40">
+            <item id="22064">0,95л</item>
+            <item id="40531">2,4л</item>
+        </product>
+        <product name="Eskaro Terrace">
+            <item id="22608">0,9л</item>
+            <item id="40529">2,7л</item>
+            <item id="40530">9л</item>
+        </product>
+        <product name="Aura Fasad Lazur">
+            <item id="38345">0,9л</item>
+            <item id="38346">2,5л</item>
+            <item id="38347">9л</item>
+        </product>
+    </category>
+
+    <!-- Декоративные покрытия Aura Dekor -->
+    <category name="Декоративные покрытия Aura Dekor">
+        <product name="Aura Dekor Grund">
+            <item id="22883">3,5кг</item>
+            <item id="22884">14кг</item>
+        </product>
+        <product name="Aura Dekor Putz Шуба 1,5мм">
+            <item id="42956">8кг</item>
+            <item id="42946">25кг</item>
+        </product>
+        <product name="Aura Dekor Putz Шуба 2,5мм">
+            <item id="42957">8кг</item>
+            <item id="41822">25кг</item>
+        </product>
+        <product name="Aura Dekor Putz Короед 2мм">
+            <item id="42954">8кг</item>
+            <item id="42945">25кг</item>
+        </product>
+        <product name="Aura Dekor Putz Короед 3мм">
+            <item id="42955">8кг</item>
+            <item id="41820">25кг</item>
+        </product>
+        <product name="Aura Dekor Structur">
+            <item id="42961">2,5л</item>
+            <item id="42962">10л</item>
+        </product>
+        <product name="Aura Dekor Primer">
+            <item id="42993">1,4кг</item>
+            <item id="42994">3,5кг</item>
+        </product>
+        <product name="Aura Dekor Matt Lack">
+            <item id="43003">1кг</item>
+        </product>
+        <product name="Aura Dekor Atlas">
+            <item id="42995">1кг</item>
+            <item id="42996">2,5кг</item>
+        </product>
+        <product name="Aura Dekor Kristall">
+            <item id="42997">1кг</item>
+            <item id="42998">2,5кг</item>
+        </product>
+        <product name="Aura Dekor Nubuck">
+            <item id="43002">1кг</item>
+        </product>
+        <product name="Aura Dekor Universum">
+            <item id="43001">8кг</item>
+        </product>
+        <product name="Aura Dekor Grotto">
+            <item id="42999">15кг</item>
+        </product>
+        <product name="Aura Dekor Loft">
+            <item id="43000">15кг</item>
+        </product>
+    </category>
+</products>
