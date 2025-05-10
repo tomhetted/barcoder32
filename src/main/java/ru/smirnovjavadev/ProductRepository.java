@@ -7,7 +7,7 @@ import java.util.*;  // Импорт коллекций
 
 public class ProductRepository {
     // Константа с именем XML файла
-    private static final String XML_FILE = "products.xml";
+    private static final String XML_FILE = "src/main/resources/products.xml";
 
     // Основной метод для получения данных о продуктах
     public static Map<String, Map<String, Product>> getProducts() {
