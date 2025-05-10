@@ -142,51 +142,51 @@
             <item id="22884">14кг</item>
         </product>
         <product name="Aura Dekor Putz Шуба 1,5мм">
-            <item id="42956">8кг</item>
-            <item id="42946">25кг</item>
+            <item id="43150">8кг</item>
+            <item id="43140">25кг</item>
         </product>
         <product name="Aura Dekor Putz Шуба 2,5мм">
-            <item id="42957">8кг</item>
+            <item id="43151">8кг</item>
             <item id="41822">25кг</item>
         </product>
         <product name="Aura Dekor Putz Короед 2мм">
-            <item id="42954">8кг</item>
-            <item id="42945">25кг</item>
+            <item id="43148">8кг</item>
+            <item id="43139">25кг</item>
         </product>
         <product name="Aura Dekor Putz Короед 3мм">
-            <item id="42955">8кг</item>
+            <item id="43149">8кг</item>
             <item id="41820">25кг</item>
         </product>
         <product name="Aura Dekor Structur">
-            <item id="42961">2,5л</item>
-            <item id="42962">10л</item>
+            <item id="43155">2,5л</item>
+            <item id="43156">10л</item>
         </product>
         <product name="Aura Dekor Primer">
-            <item id="42993">1,4кг</item>
-            <item id="42994">3,5кг</item>
+            <item id="43187">1,4кг</item>
+            <item id="43188">3,5кг</item>
         </product>
         <product name="Aura Dekor Matt Lack">
-            <item id="43003">1кг</item>
+            <item id="43197">1кг</item>
         </product>
         <product name="Aura Dekor Atlas">
-            <item id="42995">1кг</item>
-            <item id="42996">2,5кг</item>
+            <item id="43189">1кг</item>
+            <item id="43190">2,5кг</item>
         </product>
         <product name="Aura Dekor Kristall">
-            <item id="42997">1кг</item>
-            <item id="42998">2,5кг</item>
+            <item id="43191">1кг</item>
+            <item id="43192">2,5кг</item>
         </product>
         <product name="Aura Dekor Nubuck">
-            <item id="43002">1кг</item>
+            <item id="43196">1кг</item>
         </product>
         <product name="Aura Dekor Universum">
-            <item id="43001">8кг</item>
+            <item id="43195">8кг</item>
         </product>
         <product name="Aura Dekor Grotto">
-            <item id="42999">15кг</item>
+            <item id="43193">15кг</item>
         </product>
         <product name="Aura Dekor Loft">
-            <item id="43000">15кг</item>
+            <item id="43194">15кг</item>
         </product>
     </category>
 </products>
