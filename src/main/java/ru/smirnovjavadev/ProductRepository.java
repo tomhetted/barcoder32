@@ -23,24 +23,24 @@ public class ProductRepository {
             Document doc = builder.parse(new File(XML_FILE));
 
             // 3. Получаем все элементы <category> из XML
-            NodeList categories = doc.getElementsByTagName("category");
+            NodeList types = doc.getElementsByTagName("category");
 
             // 4. Обработка каждой категории
-            for (int i = 0; i < categories.getLength(); i++) {
-                Node categoryNode = categories.item(i);
+            for (int i = 0; i < types.getLength(); i++) {
+                Node typeNode = types.item(i);
 
                 // Проверяем, что это именно элемент (а не текст или комментарий)
-                if (categoryNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element categoryElement = (Element) categoryNode;
+                if (typeNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element typeElement = (Element) typeNode;
 
                     // 5. Получаем название категории
-                    String categoryName = categoryElement.getAttribute("name");
+                    String typeName = typeElement.getAttribute("name");
 
                     // 6. Создаем карту для продуктов этой категории
                     Map<String, Product> products = new LinkedHashMap<>();
 
                     // 7. Получаем все продукты в категории
-                    NodeList productNodes = categoryElement.getElementsByTagName("product");
+                    NodeList productNodes = typeElement.getElementsByTagName("product");
 
                     // 8. Обработка каждого продукта
                     for (int j = 0; j < productNodes.getLength(); j++) {
@@ -53,14 +53,14 @@ public class ProductRepository {
                             String productName = productElement.getAttribute("name");
 
                             // 10. Создаем карту для фасовок продукта (ID -> Объем)
-                            Map<Integer, String> items = new LinkedHashMap<>();
+                            Map<Integer, String> cans = new LinkedHashMap<>();
 
                             // 11. Получаем все фасовки продукта
-                            NodeList itemNodes = productElement.getElementsByTagName("item");
+                            NodeList canNodes = productElement.getElementsByTagName("item");
 
                             // 12. Обработка каждой фасовки
-                            for (int k = 0; k < itemNodes.getLength(); k++) {
-                                Node itemNode = itemNodes.item(k);
+                            for (int k = 0; k < canNodes.getLength(); k++) {
+                                Node itemNode = canNodes.item(k);
 
                                 if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
                                     Element itemElement = (Element) itemNode;
@@ -70,17 +70,17 @@ public class ProductRepository {
                                     String volume = itemElement.getTextContent();
 
                                     // 14. Добавляем в карту фасовок
-                                    items.put(id, volume);
+                                    cans.put(id, volume);
                                 }
                             }
 
                             // 15. Создаем объект Product и добавляем в карту продуктов
-                            products.put(productName, new Product(items));
+                            products.put(productName, new Product(cans));
                         }
                     }
 
                     // 16. Добавляем категорию с продуктами в основную карту
-                    productData.put(categoryName, products);
+                    productData.put(typeName, products);
                 }
             }
         } catch (Exception e) {
