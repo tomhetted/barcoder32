@@ -1,94 +1,166 @@
 package ru.smirnovjavadev;
 
-import org.w3c.dom.*;  // Импорт классов для работы с XML DOM
-import javax.xml.parsers.*;  // Импорт XML парсеров
-import java.io.*;  // Импорт для работы с файлами
-import java.util.*;  // Импорт коллекций
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
+/**
+ * Класс для работы с данными о продуктах из внешнего XML-файла
+ * (файл должен находиться в той же папке, что и исполняемый JAR)
+ */
 public class ProductRepository {
-    // Константа с именем XML файла
-    private static final String XML_FILE = "src/main/resources/products.xml";
+    // Имя XML-файла с данными (располагается рядом с программой)
+    private static final String XML_FILE_NAME = "products.xml";
+    // Кэш для хранения данных после первой загрузки
+    private static Map<String, Map<String, Product>> dataCache = null;
+    // Время последнего изменения файла
+    private static long lastModifiedTime = 0;
 
-    // Основной метод для получения данных о продуктах
+    /**
+     * Возвращает данные о продуктах, загружая их из XML при первом вызове
+     * или при изменении файла
+     */
     public static Map<String, Map<String, Product>> getProducts() {
-        // Создаем основную структуру данных: Категория -> (Продукт -> Объект Product)
-        Map<String, Map<String, Product>> productData = new LinkedHashMap<>();
+        File xmlFile = getXmlFile();
+        checkFileExists(xmlFile);
 
+        // Если файл изменился или данные еще не загружены
+        if (dataCache == null || xmlFile.lastModified() > lastModifiedTime) {
+            dataCache = loadDataFromXml(xmlFile);
+            lastModifiedTime = xmlFile.lastModified();
+        }
+        return dataCache;
+    }
+
+    /**
+     * Получает файл XML из рабочей директории программы
+     */
+    private static File getXmlFile() {
         try {
-            // 1. Настройка XML парсера
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
+            String jarPath = ProductRepository.class.getProtectionDomain()
+                    .getCodeSource().getLocation().getPath();
+            String decodedPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8.name());
+            File jarFile = new File(decodedPath);
+            return new File(jarFile.getParent(), XML_FILE_NAME);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Ошибка декодирования пути к JAR-файлу", e);
+        }
+    }
 
-            // 2. Парсинг XML файла
-            Document doc = builder.parse(new File(XML_FILE));
+    /**
+     * Проверяет существование файла, создает шаблон при необходимости
+     */
+    private static void checkFileExists(File xmlFile) throws RuntimeException {
+        if (!xmlFile.exists()) {
+            try {
+                createDefaultXmlFile(xmlFile);
+                System.out.println("Создан новый файл конфигурации: "
+                        + xmlFile.getAbsolutePath());
+            } catch (IOException e) {
+                throw new RuntimeException("Не удалось создать файл конфигурации", e);
+            }
+        }
+    }
 
-            // 3. Получаем все элементы <category> из XML
-            NodeList types = doc.getElementsByTagName("category");
+    /**
+     * Создает файл с шаблоном данных при первом запуске
+     */
+    private static void createDefaultXmlFile(File targetFile) throws IOException {
+        try (InputStream is = ProductRepository.class.getResourceAsStream("/default_products.xml");
+             OutputStream os = new FileOutputStream(targetFile)) {
+            if (is == null) {
+                throw new IOException("Шаблон default_products.xml не найден в ресурсах");
+            }
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        }
+    }
 
-            // 4. Обработка каждой категории
-            for (int i = 0; i < types.getLength(); i++) {
-                Node typeNode = types.item(i);
+    /**
+     * Основной метод загрузки данных из XML
+     */
+    private static Map<String, Map<String, Product>> loadDataFromXml(File xmlFile) throws RuntimeException {
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = builder.parse(xmlFile);
+            doc.getDocumentElement().normalize();
 
-                // Проверяем, что это именно элемент (а не текст или комментарий)
-                if (typeNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element typeElement = (Element) typeNode;
+            Map<String, Map<String, Product>> result = new LinkedHashMap<>();
+            NodeList categories = doc.getElementsByTagName("category");
 
-                    // 5. Получаем название категории
-                    String typeName = typeElement.getAttribute("name");
-
-                    // 6. Создаем карту для продуктов этой категории
-                    Map<String, Product> products = new LinkedHashMap<>();
-
-                    // 7. Получаем все продукты в категории
-                    NodeList productNodes = typeElement.getElementsByTagName("product");
-
-                    // 8. Обработка каждого продукта
-                    for (int j = 0; j < productNodes.getLength(); j++) {
-                        Node productNode = productNodes.item(j);
-
-                        if (productNode.getNodeType() == Node.ELEMENT_NODE) {
-                            Element productElement = (Element) productNode;
-
-                            // 9. Получаем название продукта
-                            String productName = productElement.getAttribute("name");
-
-                            // 10. Создаем карту для фасовок продукта (ID -> Объем)
-                            Map<Integer, String> cans = new LinkedHashMap<>();
-
-                            // 11. Получаем все фасовки продукта
-                            NodeList canNodes = productElement.getElementsByTagName("item");
-
-                            // 12. Обработка каждой фасовки
-                            for (int k = 0; k < canNodes.getLength(); k++) {
-                                Node itemNode = canNodes.item(k);
-
-                                if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
-                                    Element itemElement = (Element) itemNode;
-
-                                    // 13. Получаем ID и объем фасовки
-                                    int id = Integer.parseInt(itemElement.getAttribute("id"));
-                                    String volume = itemElement.getTextContent();
-
-                                    // 14. Добавляем в карту фасовок
-                                    cans.put(id, volume);
-                                }
-                            }
-
-                            // 15. Создаем объект Product и добавляем в карту продуктов
-                            products.put(productName, new Product(cans));
-                        }
-                    }
-
-                    // 16. Добавляем категорию с продуктами в основную карту
-                    productData.put(typeName, products);
+            for (int i = 0; i < categories.getLength(); i++) {
+                Node categoryNode = categories.item(i);
+                if (categoryNode.getNodeType() == Node.ELEMENT_NODE) {
+                    processCategory((Element) categoryNode, result);
                 }
             }
-        } catch (Exception e) {
-            // 17. Обработка ошибок парсинга
-            throw new RuntimeException("Failed to parse XML file", e);
-        }
+            return result;
 
-        // 18. Возвращаем заполненную структуру данных
-        return productData;
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка чтения XML-файла: " + xmlFile.getAbsolutePath(), e);
+        }
+    }
+
+    /**
+     * Обрабатывает категорию продуктов
+     */
+    private static void processCategory(Element categoryElement,
+                                        Map<String, Map<String, Product>> result) {
+
+        String categoryName = categoryElement.getAttribute("name");
+        Map<String, Product> products = new LinkedHashMap<>();
+        NodeList productNodes = categoryElement.getElementsByTagName("product");
+
+        for (int j = 0; j < productNodes.getLength(); j++) {
+            Node productNode = productNodes.item(j);
+            if (productNode.getNodeType() == Node.ELEMENT_NODE) {
+                processProduct((Element) productNode, products);
+            }
+        }
+        result.put(categoryName, products);
+    }
+
+    /**
+     * Обрабатывает конкретный продукт
+     */
+    private static void processProduct(Element productElement,
+                                       Map<String, Product> products) {
+
+        String productName = productElement.getAttribute("name");
+        Map<Integer, String> items = new LinkedHashMap<>();
+        NodeList itemNodes = productElement.getElementsByTagName("item");
+
+        for (int k = 0; k < itemNodes.getLength(); k++) {
+            Node itemNode = itemNodes.item(k);
+            if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
+                processItem((Element) itemNode, items);
+            }
+        }
+        products.put(productName, new Product(items));
+    }
+
+    /**
+     * Обрабатывает отдельную фасовку продукта
+     */
+    private static void processItem(Element itemElement,
+                                    Map<Integer, String> items) {
+
+        int id = Integer.parseInt(itemElement.getAttribute("id"));
+        String volume = itemElement.getTextContent().trim();
+        items.put(id, volume);
+    }
+
+    /**
+     * Вспомогательный метод для получения абсолютного пути к файлу
+     * (полезно для логов и сообщений об ошибках)
+     */
+    public static String getXmlFilePath() {
+        return getXmlFile().getAbsolutePath();
     }
 }
