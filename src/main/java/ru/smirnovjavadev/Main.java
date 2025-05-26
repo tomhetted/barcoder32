@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Получение данных через ProductService
-        Map<String, Map<String, Product>> productData = ProductRepository.getProducts();
+        List<Category> productData = ProductRepository.getProducts();
 
         // Создание интерфейса
         BarcoderView view = new BarcoderView();

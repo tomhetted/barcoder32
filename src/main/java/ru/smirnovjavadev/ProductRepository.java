@@ -15,7 +15,7 @@ public class ProductRepository {
     // Имя XML-файла с данными (располагается рядом с программой)
     private static final String XML_FILE_NAME = "products.xml";
     // Кэш для хранения данных после первой загрузки
-    private static Map<String, Map<String, Product>> dataCache = null;
+    private static List<Category> dataCache = null;
     // Время последнего изменения файла
     private static long lastModifiedTime = 0;
 
@@ -23,11 +23,10 @@ public class ProductRepository {
      * Возвращает данные о продуктах, загружая их из XML при первом вызове
      * или при изменении файла
      */
-    public static Map<String, Map<String, Product>> getProducts() {
+    public static List<Category> getProducts() {
         File xmlFile = getXmlFile();
         checkFileExists(xmlFile);
 
-        // Если файл изменился или данные еще не загружены
         if (dataCache == null || xmlFile.lastModified() > lastModifiedTime) {
             dataCache = loadDataFromXml(xmlFile);
             lastModifiedTime = xmlFile.lastModified();
@@ -85,75 +84,69 @@ public class ProductRepository {
     /**
      * Основной метод загрузки данных из XML
      */
-    private static Map<String, Map<String, Product>> loadDataFromXml(File xmlFile) throws RuntimeException {
+    private static List<Category> loadDataFromXml(File xmlFile) {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(xmlFile);
             doc.getDocumentElement().normalize();
 
-            Map<String, Map<String, Product>> result = new LinkedHashMap<>();
-            NodeList categories = doc.getElementsByTagName("category");
+            List<Category> categories = new ArrayList<>();
+            NodeList categoryNodes = doc.getElementsByTagName("category");
 
-            for (int i = 0; i < categories.getLength(); i++) {
-                Node categoryNode = categories.item(i);
+            for (int i = 0; i < categoryNodes.getLength(); i++) {
+                Node categoryNode = categoryNodes.item(i);
                 if (categoryNode.getNodeType() == Node.ELEMENT_NODE) {
-                    processCategory((Element) categoryNode, result);
+                    categories.add(processCategory((Element) categoryNode));
                 }
             }
-            return result;
+            return categories;
 
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка чтения XML-файла: " + xmlFile.getAbsolutePath(), e);
+            throw new RuntimeException("Ошибка чтения XML", e);
         }
     }
 
     /**
      * Обрабатывает категорию продуктов
      */
-    private static void processCategory(Element categoryElement,
-                                        Map<String, Map<String, Product>> result) {
-
+    private static Category processCategory(Element categoryElement) {
         String categoryName = categoryElement.getAttribute("name");
-        Map<String, Product> products = new LinkedHashMap<>();
+        List<Product> products = new ArrayList<>();
         NodeList productNodes = categoryElement.getElementsByTagName("product");
 
         for (int j = 0; j < productNodes.getLength(); j++) {
             Node productNode = productNodes.item(j);
             if (productNode.getNodeType() == Node.ELEMENT_NODE) {
-                processProduct((Element) productNode, products);
+                products.add(processProduct((Element) productNode));
             }
         }
-        result.put(categoryName, products);
+        return new Category(categoryName, products);
     }
 
     /**
      * Обрабатывает конкретный продукт
      */
-    private static void processProduct(Element productElement,
-                                       Map<String, Product> products) {
-
+    private static Product processProduct(Element productElement) {
         String productName = productElement.getAttribute("name");
-        Map<Integer, String> items = new LinkedHashMap<>();
+        List<Item> items = new ArrayList<>();
         NodeList itemNodes = productElement.getElementsByTagName("item");
 
         for (int k = 0; k < itemNodes.getLength(); k++) {
             Node itemNode = itemNodes.item(k);
             if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
-                processItem((Element) itemNode, items);
+                items.add(processItem((Element) itemNode));
             }
         }
-        products.put(productName, new Product(items));
+        return new Product(productName, items);
     }
 
     /**
      * Обрабатывает отдельную фасовку продукта
      */
-    private static void processItem(Element itemElement,
-                                    Map<Integer, String> items) {
-
+    private static Item processItem(Element itemElement) {
         int id = Integer.parseInt(itemElement.getAttribute("id"));
         String volume = itemElement.getTextContent().trim();
-        items.put(id, volume);
+        return new Item(id, volume);
     }
 
     /**

@@ -1,6 +1,6 @@
 package ru.smirnovjavadev;
 
-import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -9,7 +9,6 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.Map;
 
 public class BarcoderView {
     private final ComboBox<String> typeComboBox = new ComboBox<>();
@@ -45,8 +44,19 @@ public class BarcoderView {
         return layout;
     }
 
-    public void updateProductList(Map<String, Product> products) {
-        productComboBox.setItems(FXCollections.observableArrayList(products.keySet()));
+    /**
+     * Обновляет список продуктов в выпадающем меню
+     * @param products ObservableList с названиями продуктов
+     */
+    public void updateProductList(ObservableList<String> products) {
+        // Очищаем предыдущий выбор
+        productComboBox.getSelectionModel().clearSelection();
+
+        // Устанавливаем новые элементы
+        productComboBox.setItems(products);
+
+        // Очищаем детали при смене списка продуктов
+        clearDetails();
     }
 
     public void clearDetails() {

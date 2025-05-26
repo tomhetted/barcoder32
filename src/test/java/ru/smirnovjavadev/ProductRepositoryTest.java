@@ -1,44 +1,71 @@
 package ru.smirnovjavadev;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-/**
- * Unit test for simple App.
- */
-@Disabled
-public class ProductRepositoryTest {
-    private ProductRepository productRepository;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class ProductRepositoryTest {
+    private List<Category> categories;
 
     @BeforeEach
-    void prepare() {
-        System.out.println("Before each: " + this);
-        productRepository = new ProductRepository();
+    void setUp() {
+        categories = ProductRepository.getProducts();
     }
 
     @Test
-    void productGetTest() {
-        System.out.println("Test 1: ");
-        String label = productRepository.getProducts()
-               .get("Интерьерные краски Aura")
-               .get("Nord")
-               .getProductMap()
-               .get(17113);
-        Assertions.assertEquals("0,9л", label);
+    void shouldFindExistingItem() {
+        // Act
+        Optional<String> volume = findItemVolumeById(17113);
+
+        // Assert
+        assertTrue(volume.isPresent());
+        assertEquals("0,9л", volume.get());
     }
 
     @Test
-    void productGetTest_is_Null() {
-        System.out.println("Test 2: ");
-        String label = productRepository.getProducts()
-                .get("Интерьерные краски Aura")
-                .get("Nord")
-                .getProductMap()
-                .get(9999);
-        Assertions.assertNull(label);
+    void shouldReturnEmptyForNonExistingItem() {
+        // Act
+        Optional<String> volume = findItemVolumeById(9999);
+
+        // Assert
+        assertFalse(volume.isPresent());
     }
 
+    @Test
+    void shouldContainExpectedCategories() {
+        // Assert
+        assertTrue(categories.stream()
+                .anyMatch(c -> c.getName().equals("Интерьерные краски Aura")));
+
+        assertTrue(categories.stream()
+                .anyMatch(c -> c.getName().equals("Интерьерные краски Eskaro")));
+    }
+
+    @Test
+    void shouldFindProductInCategory() {
+        // Act
+        Optional<Product> nordProduct = categories.stream()
+                .filter(c -> c.getName().equals("Интерьерные краски Aura"))
+                .flatMap(c -> c.getProducts().stream())
+                .filter(p -> p.getName().equals("Nord"))
+                .findFirst();
+
+        // Assert
+        assertTrue(nordProduct.isPresent());
+        assertEquals(3, nordProduct.get().getItems().size());
+    }
+
+    private Optional<String> findItemVolumeById(int id) {
+        return categories.stream()
+                .flatMap(c -> c.getProducts().stream())
+                .flatMap(p -> p.getItems().stream())
+                .filter(i -> i.getId() == id)
+                .map(Item::getVolume)
+                .findFirst();
+    }
 }

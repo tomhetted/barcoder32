@@ -1,21 +1,18 @@
 package ru.smirnovjavadev;
 
 
-import java.util.Map;
+import java.util.List;
 
 public class Product {
+    private String name;
+    private List<Item> items;
 
-    private Map<Integer, String> productMap;
-
-    public Product(Map<Integer, String> productMap) {
-        this.productMap = productMap;
+    public Product(String name, List<Item> items) {
+        this.name = name;
+        this.items = items;
     }
 
-    public Map<Integer, String> getProductMap() {
-        return productMap;
-    }
-
-    public void setProductMap(Map<Integer, String> productMap) {
-        this.productMap = productMap;
-    }
+    // Геттеры и сеттеры
+    public String getName() { return name; }
+    public List<Item> getItems() { return items; }
 }
