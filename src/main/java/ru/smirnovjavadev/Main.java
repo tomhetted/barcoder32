@@ -22,7 +22,7 @@ public class Main extends Application {
 
         // Создание сцены и отображение
         Scene scene = new Scene(view.getLayout());
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/greystyle.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
         primaryStage.setTitle("Колеровочные баркоды Eskaro");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
