@@ -1,6 +1,5 @@
 package ru.smirnovjavadev;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -14,57 +13,60 @@ public class BarcoderView {
     private final ComboBox<String> typeComboBox = new ComboBox<>();
     private final ComboBox<String> productComboBox = new ComboBox<>();
     private final VBox detailsBox = new VBox(5);
+    private final TextField searchField = new TextField();
+    private final Button searchButton = new Button("Найти");
+    private final VBox mainLayout;
 
     public BarcoderView() {
         setupUI();
+        mainLayout = createMainLayout();
     }
 
     private void setupUI() {
         typeComboBox.setPromptText("Выберите тип ЛКМ");
         productComboBox.setPromptText("Выберите продукт");
         detailsBox.setPadding(new Insets(10));
+        searchField.setPromptText("Поиск по названию продукта");
     }
 
-    public ComboBox<String> getTypeComboBox() {
-        return typeComboBox;
-    }
-
-    public ComboBox<String> getProductComboBox() {
-        return productComboBox;
-    }
-
-    public VBox getDetailsBox() {
-        return detailsBox;
-    }
-
-    public VBox getLayout() {
-        VBox layout = new VBox(10, typeComboBox, productComboBox, detailsBox);
+    private VBox createMainLayout() {
+        VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
-        layout.setPrefSize(434, 370);
+        layout.setPrefSize(434, 470);
+
+        HBox searchBox = new HBox(10, searchField, searchButton);
+        searchBox.setAlignment(Pos.CENTER_LEFT);
+
+        layout.getChildren().addAll(
+                searchBox,
+                typeComboBox,
+                productComboBox,
+                detailsBox
+        );
+
         return layout;
     }
 
-    /**
-     * Обновляет список продуктов в выпадающем меню
-     * @param products ObservableList с названиями продуктов
-     */
-    public void updateProductList(ObservableList<String> products) {
-        // Очищаем предыдущий выбор
-        productComboBox.getSelectionModel().clearSelection();
+    // Геттеры
+    public ComboBox<String> getTypeComboBox() { return typeComboBox; }
+    public ComboBox<String> getProductComboBox() { return productComboBox; }
+    public VBox getDetailsBox() { return detailsBox; }
+    public TextField getSearchField() { return searchField; }
+    public Button getSearchButton() { return searchButton; }
+    public VBox getLayout() { return mainLayout; }
 
-        // Устанавливаем новые элементы
-        productComboBox.setItems(products);
-
-        // Очищаем детали при смене списка продуктов
-        clearDetails();
-    }
-
+    // Методы для работы с деталями
     public void clearDetails() {
         detailsBox.getChildren().clear();
     }
 
     public void addDetailRow(HBox row) {
         detailsBox.getChildren().add(row);
+    }
+
+    public void addProductHeader(String productName) {
+        Label header = new Label(productName);
+        detailsBox.getChildren().add(header);
     }
 
     public static HBox createDetailRow(int id, String volume) {
