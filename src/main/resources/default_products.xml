@@ -20,15 +20,15 @@
             <item id="22889">2,7л TR</item>
             <item id="22890">9л TR</item>
         </product>
-        <product name="Golfström">
-            <item id="17119">0,9л</item>
-            <item id="17121">2,7л</item>
-            <item id="17122">9л</item>
-        </product>
         <product name="Satin">
             <item id="17124">0,9л</item>
             <item id="15968">2,7л</item>
             <item id="15969">9л</item>
+        </product>
+        <product name="Golfström">
+            <item id="17119">0,9л</item>
+            <item id="17121">2,7л</item>
+            <item id="17122">9л</item>
         </product>
     </category>
 

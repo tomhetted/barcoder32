@@ -1,10 +1,8 @@
 package ru.smirnovjavadev;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,12 +53,11 @@ public class BarcoderController {
     private void updateProductList(String categoryName) {
         Category category = findCategoryByName(categoryName);
         if (category != null) {
-            ObservableList<String> products = FXCollections.observableArrayList(
+            view.getProductComboBox().setItems(FXCollections.observableArrayList(
                     category.getProducts().stream()
                             .map(Product::getName)
                             .collect(Collectors.toList())
-            );
-            view.getProductComboBox().setItems(products);
+            ));
             view.getProductComboBox().getSelectionModel().clearSelection();
         }
     }
@@ -84,6 +81,7 @@ public class BarcoderController {
                 HBox row = BarcoderView.createDetailRow(item.getId(), item.getVolume());
                 view.addDetailRow(row);
             });
+            view.adjustWindowHeight(product.getItems().size() + 1); // +1 для заголовка
         }
     }
 
@@ -104,20 +102,27 @@ public class BarcoderController {
         if (foundProducts.isEmpty()) {
             Label noResults = new Label("Ничего не найдено");
             view.getDetailsBox().getChildren().add(noResults);
+            view.adjustWindowHeight(1);
         } else {
-            foundProducts.forEach(product -> {
+            int totalItems = 0;
+            for (Product product : foundProducts) {
                 view.addProductHeader(product.getName());
-                product.getItems().forEach(item -> {
+                totalItems++; // Заголовок
+
+                for (Item item : product.getItems()) {
                     HBox row = BarcoderView.createDetailRow(item.getId(), item.getVolume());
                     view.addDetailRow(row);
-                });
-            });
+                    totalItems++; // Каждый элемент
+                }
+            }
+            view.adjustWindowHeight(totalItems);
         }
     }
 
     private void resetToNormalMode() {
         view.clearDetails();
         view.getSearchField().clear();
+        view.adjustWindowHeight(0); // Восстанавливаем исходную высоту
     }
 
     private Category findCategoryByName(String name) {

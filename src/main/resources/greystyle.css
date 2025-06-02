@@ -80,3 +80,26 @@
     -fx-spacing: 10px;
     -fx-padding: 10px;
 }
+
+/* Стиль для detailsBox (VBox) */
+#detailsBox {
+    -fx-background-color: #dfeef5;
+}
+
+/* Стиль для ScrollPane */
+.scroll-pane {
+    -fx-background: #dfeef5;
+    -fx-background-color: transparent;
+}
+
+/* Стиль для строк с деталями (HBox) */
+.detail-row {
+    -fx-background-color: #dfeef5;
+    -fx-padding: 5;
+}
+
+/* Стиль для текстового поля ID */
+.id-field {
+    -fx-control-inner-background: #dfeef5;
+    -fx-text-fill: black;
+}

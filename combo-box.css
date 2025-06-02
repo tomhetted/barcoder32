@@ -1,0 +1,13 @@
+/* Комбинированные списки (ComboBox) */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #2d2f33;
+    -fx-border-color: #c3c4c8;     /* Светло-серый контур */
+    -fx-border-radius: 5;          /* Скругленные углы */
+    -fx-background-radius: 5;
+}
+
+.combo-box-popup {
+    -fx-background-color: #ffffff; /* Белый фон выпадающего списка */
+    -fx-text-fill: #2d2f33;
+}
