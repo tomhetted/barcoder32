@@ -2,13 +2,17 @@ package ru.smirnovjavadev;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 
 public class EskoderView {
     private final ComboBox<String> typeComboBox = new ComboBox<>();
@@ -19,13 +23,15 @@ public class EskoderView {
     private final ScrollPane scrollPane = new ScrollPane();
     private final VBox mainLayout;
     private final double BASE_WINDOW_HEIGHT = 400;
+    private final double BASE_WINDOW_WIDTH = 434;
     private final double ITEM_HEIGHT = 30;
     private final double MAX_WINDOW_HEIGHT = 700;
+
 
     public EskoderView() {
         setupUI();
         mainLayout = createMainLayout();
-        detailsBox.setId("detailsBox");
+        detailsBox.setId("detailsBox"); // для CSS #detailsBox
     }
 
     private void setupUI() {
@@ -33,14 +39,12 @@ public class EskoderView {
         productComboBox.setPromptText("Выберите продукт");
         searchField.setPromptText("Поиск по названию продукта");
 
-        // Настройка ScrollPane
         scrollPane.setContent(detailsBox);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setMinHeight(150);
 
-        // Настройка detailsBox
         detailsBox.setPadding(new Insets(10));
         VBox.setVgrow(scrollPane, Priority.ALWAYS);
     }
@@ -48,7 +52,7 @@ public class EskoderView {
     private VBox createMainLayout() {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
-        layout.setPrefSize(434, BASE_WINDOW_HEIGHT);
+        layout.setPrefSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
 
         HBox searchBox = new HBox(10, searchField, searchButton);
         searchBox.setAlignment(Pos.CENTER_LEFT);
@@ -64,7 +68,6 @@ public class EskoderView {
         return layout;
     }
 
-    // Методы для управления окном
     public void adjustWindowHeight(int itemCount) {
         double calculatedHeight = BASE_WINDOW_HEIGHT + (itemCount * ITEM_HEIGHT);
         double newHeight = Math.min(Math.max(calculatedHeight, BASE_WINDOW_HEIGHT), MAX_WINDOW_HEIGHT);
@@ -72,7 +75,7 @@ public class EskoderView {
         Scene scene = mainLayout.getScene();
         if (scene != null && scene.getWindow() != null) {
             scene.getWindow().setHeight(newHeight);
-            scrollPane.setVvalue(0); // Прокрутка в начало
+            scrollPane.setVvalue(0);
         }
     }
 
@@ -81,14 +84,14 @@ public class EskoderView {
     }
 
     // Геттеры
-    public ComboBox<String> getTypeComboBox() { return typeComboBox; }
-    public ComboBox<String> getProductComboBox() { return productComboBox; }
-    public VBox getDetailsBox() { return detailsBox; }
-    public TextField getSearchField() { return searchField; }
-    public Button getSearchButton() { return searchButton; }
-    public VBox getLayout() { return mainLayout; }
+    public ComboBox<String> getTypeComboBox()   { return typeComboBox; }
+    public ComboBox<String> getProductComboBox(){ return productComboBox; }
+    public VBox getDetailsBox()                 { return detailsBox; }
+    public TextField getSearchField()           { return searchField; }
+    public Button getSearchButton()             { return searchButton; }
+    public VBox getLayout()                     { return mainLayout; }
 
-    // Методы для работы с содержимым
+    // Работа с деталями
     public void clearDetails() {
         detailsBox.getChildren().clear();
     }
@@ -106,23 +109,19 @@ public class EskoderView {
         TextField idField = new TextField(String.valueOf(id));
         idField.setEditable(false);
         idField.setPrefWidth(80);
-        idField.getStyleClass().add("id-field");
 
         Label volumeLabel = new Label(volume);
         volumeLabel.setPrefWidth(100);
-        volumeLabel.getStyleClass().add("volume-label");
 
         Button copyButton = new Button("Копировать");
         copyButton.setOnAction(e -> {
-            Clipboard clipboard = Clipboard.getSystemClipboard();
             ClipboardContent content = new ClipboardContent();
             content.putString(String.valueOf(id));
-            clipboard.setContent(content);
+            Clipboard.getSystemClipboard().setContent(content);
         });
 
         HBox row = new HBox(10, copyButton, idField, volumeLabel);
         row.setAlignment(Pos.CENTER_LEFT);
-        row.getStyleClass().add("detail-row");
         return row;
     }
 }

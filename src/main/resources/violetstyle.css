@@ -1,6 +1,6 @@
 /* Общий фон окна */
 .root {
-    -fx-background-color: #dfeef5; /* Светло-голубовато-серый */
+    -fx-background-color: #9d69db; /* Фиолетово-лиловый */
     -fx-font-size: 16px;
     -fx-font-family: "Tahoma";
 }
@@ -9,31 +9,31 @@
    ComboBox (тип ЛКМ и выбор продукта)
    -------------------------------------------------- */
 .combo-box {
-    -fx-background-color: #b3dee2; /* Светлый бирюзовый */
-    -fx-text-fill: #2a3b47;        /* Темно-серый текст */
-    -fx-border-color: #87cfd1;     /* Чуть темнее бирюзовый контур */
+    -fx-background-color: #81f497; /* Светло-зеленый */
+    -fx-text-fill: #2d2f33;        /* Темно-серый текст */
+    -fx-border-color: #57d381;     /* Более темный зеленый контур */
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-font-size: 20px;
 }
 .combo-box .arrow-button {
-    -fx-background-color: #b3dee2;
+    -fx-background-color: #81f497;
 }
 .combo-box .arrow {
-    -fx-background-color: #2a3b47;
+    -fx-background-color: #2d2f33;
 }
 .combo-box-popup .list-view {
-    -fx-background-color: #b3dee2;
-    -fx-border-color: #87cfd1;
+    -fx-background-color: #81f497;
+    -fx-border-color: #57d381;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
 }
 .combo-box-popup .list-cell {
-    -fx-background-color: #b3dee2;
-    -fx-text-fill: #2a3b47;
+    -fx-background-color: #81f497;
+    -fx-text-fill: #2d2f33;
 }
 .combo-box-popup .list-cell:hover {
-    -fx-background-color: #87cfd1;
+    -fx-background-color: #57d381;
     -fx-text-fill: #ffffff;
 }
 
@@ -42,8 +42,8 @@
    -------------------------------------------------- */
 .text-field {
     -fx-background-color: #ffffff;
-    -fx-text-fill: #2a3b47;
-    -fx-border-color: #c4d0d6; /* Светло-серый контур */
+    -fx-text-fill: #2d2f33;
+    -fx-border-color: #c3c4c8;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
 }
@@ -53,35 +53,34 @@
    -------------------------------------------------- */
 .label {
     -fx-font-size: 20px;
-    -fx-text-fill: #6faab8; /* Спокойный бирюзовый */
+    -fx-text-fill: #81f497; /* Светло-зеленый текст */
 }
 
 /* --------------------------------------------------
    Кнопки (Найти и Копировать)
    -------------------------------------------------- */
 .button {
-    -fx-background-color: #b3dee2;
-    -fx-text-fill: #2a3b47;
-    -fx-border-color: #87cfd1;
+    -fx-background-color: #81f497;
+    -fx-text-fill: #2d2f33;
+    -fx-border-color: #57d381;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-font-weight: bold;
 }
 .button:hover {
-    -fx-background-color: #87cfd1;
+    -fx-background-color: #57d381;
     -fx-text-fill: #ffffff;
 }
 
 /* --------------------------------------------------
-   Строки и контейнеры
+   Layout-контейнеры HBox/VBox
    -------------------------------------------------- */
-/* HBox для строк детализации */
 .hbox {
     -fx-spacing: 10px;
     -fx-alignment: CENTER_LEFT;
 }
-/* VBox для главного layout и detailsBox */
 .vbox {
+    -fx-background-color: #9d69db;
     -fx-spacing: 10px;
     -fx-padding: 10px;
 }
@@ -89,20 +88,17 @@
 /* --------------------------------------------------
    Details area (список позиций)
    -------------------------------------------------- */
-/* Контейнер деталей */
 #detailsBox {
-    -fx-background-color: #dfeef5;
+    -fx-background-color: #9d69db;
     -fx-spacing: 5px;
     -fx-padding: 10px;
 }
-/* ScrollPane фон */
 .scroll-pane {
     -fx-background: transparent;
     -fx-background-color: transparent;
 }
-/* Одиночная строка детализации */
 .detail-row {
-    -fx-background-color: #dfeef5;
+    -fx-background-color: #9d69db;
     -fx-padding: 5px;
 }
 
@@ -111,12 +107,12 @@
    -------------------------------------------------- */
 /* Поле с ID */
 .id-field {
-    -fx-control-inner-background: #dfeef5;
+    -fx-control-inner-background: #9d69db;
     -fx-text-fill: black;
     -fx-pref-width: 80px;
 }
 /* Метка объёма */
 .volume-label {
-    -fx-text-fill: #2a3b47;
+    -fx-text-fill: #2d2f33;
     -fx-pref-width: 100px;
 }

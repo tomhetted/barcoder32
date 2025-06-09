@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Получение данных через ProductService
+        // Получение данных через ProductRepository
         List<Category> productData = ProductRepository.getProducts();
 
         // Создание интерфейса
