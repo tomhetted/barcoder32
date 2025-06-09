@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.Scene;
 
-public class BarcoderView {
+public class EskoderView {
     private final ComboBox<String> typeComboBox = new ComboBox<>();
     private final ComboBox<String> productComboBox = new ComboBox<>();
     private final VBox detailsBox = new VBox(5);
@@ -22,7 +22,7 @@ public class BarcoderView {
     private final double ITEM_HEIGHT = 30;
     private final double MAX_WINDOW_HEIGHT = 700;
 
-    public BarcoderView() {
+    public EskoderView() {
         setupUI();
         mainLayout = createMainLayout();
         detailsBox.setId("detailsBox");

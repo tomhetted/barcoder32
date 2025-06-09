@@ -7,11 +7,11 @@ import javafx.scene.layout.HBox;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BarcoderController {
-    private final BarcoderView view;
+public class EskoderController {
+    private final EskoderView view;
     private final List<Category> categories;
 
-    public BarcoderController(BarcoderView view, List<Category> categories) {
+    public EskoderController(EskoderView view, List<Category> categories) {
         this.view = view;
         this.categories = categories;
         setupEventHandlers();
@@ -78,7 +78,7 @@ public class BarcoderController {
         if (product != null) {
             view.addProductHeader(productName);
             product.getItems().forEach(item -> {
-                HBox row = BarcoderView.createDetailRow(item.getId(), item.getVolume());
+                HBox row = EskoderView.createDetailRow(item.getId(), item.getVolume());
                 view.addDetailRow(row);
             });
             view.adjustWindowHeight(product.getItems().size() + 1); // +1 для заголовка
@@ -110,7 +110,7 @@ public class BarcoderController {
                 totalItems++; // Заголовок
 
                 for (Item item : product.getItems()) {
-                    HBox row = BarcoderView.createDetailRow(item.getId(), item.getVolume());
+                    HBox row = EskoderView.createDetailRow(item.getId(), item.getVolume());
                     view.addDetailRow(row);
                     totalItems++; // Каждый элемент
                 }

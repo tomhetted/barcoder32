@@ -15,14 +15,14 @@ public class Main extends Application {
         List<Category> productData = ProductRepository.getProducts();
 
         // Создание интерфейса
-        BarcoderView view = new BarcoderView();
+        EskoderView view = new EskoderView();
 
         // Создание контроллера
-        BarcoderController controller = new BarcoderController(view, productData);
+        EskoderController controller = new EskoderController(view, productData);
 
         // Создание сцены и отображение
         Scene scene = new Scene(view.getLayout());
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/greystyle.css")).toExternalForm());
         primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(400);
         primaryStage.setMaxHeight(700);

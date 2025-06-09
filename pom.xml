@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ru.smirnovjavadev</groupId>
-  <artifactId>barcoder32</artifactId>
+  <artifactId>eskoder</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>barcoder32</name>
+  <name>eskoder</name>
   <url>http://maven.apache.org</url>
 
   <properties>
