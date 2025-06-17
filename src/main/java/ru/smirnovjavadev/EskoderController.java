@@ -2,15 +2,26 @@ package ru.smirnovjavadev;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Контроллер, управляющий логикой приложения:
+ * - Обрабатывает действия пользователя (выбор, поиск)
+ * - Взаимодействует с View (EskoderView)
+ * - Получает данные из модели (список Category и Product)
+ */
 public class EskoderController {
-    private final EskoderView view;
-    private final List<Category> categories;
 
+    private final EskoderView view;               // UI-компоненты
+    private final List<Category> categories;      // Модель данных: список категорий с продуктами
+
+    /**
+     * Конструктор инициализирует контроллер:
+     * - Запускает установку обработчиков
+     * - Заполняет ComboBox типов
+     */
     public EskoderController(EskoderView view, List<Category> categories) {
         this.view = view;
         this.categories = categories;
@@ -18,23 +29,32 @@ public class EskoderController {
         initTypeComboBox();
     }
 
+    /**
+     * Заполняет ComboBox типов (категорий)
+     */
     private void initTypeComboBox() {
         List<String> categoryNames = categories.stream()
                 .map(Category::getName)
                 .collect(Collectors.toList());
+
         view.getTypeComboBox().setItems(FXCollections.observableArrayList(categoryNames));
     }
 
+    /**
+     * Назначает обработчики событий для всех интерактивных элементов UI
+     */
     private void setupEventHandlers() {
-        // Обработчики комбобоксов
+        // Обработка выбора типа (категории)
         view.getTypeComboBox().setOnAction(e -> handleCategorySelection());
+
+        // Обработка выбора продукта
         view.getProductComboBox().setOnAction(e -> handleProductSelection());
 
-        // Обработчики поиска
+        // Обработка поиска по нажатию кнопки или Enter в поле
         view.getSearchButton().setOnAction(e -> handleSearch());
         view.getSearchField().setOnAction(e -> handleSearch());
 
-        // Сброс поиска при изменении текста
+        // Сброс в обычный режим при очистке поля поиска
         view.getSearchField().textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.isEmpty()) {
                 resetToNormalMode();
@@ -42,6 +62,11 @@ public class EskoderController {
         });
     }
 
+    /**
+     * Обрабатывает выбор категории:
+     * - сбрасывает состояние
+     * - загружает список продуктов для выбранной категории
+     */
     private void handleCategorySelection() {
         String selectedCategory = view.getTypeComboBox().getValue();
         if (selectedCategory != null) {
@@ -50,18 +75,26 @@ public class EskoderController {
         }
     }
 
+    /**
+     * Заполняет ComboBox продуктов для указанной категории
+     */
     private void updateProductList(String categoryName) {
         Category category = findCategoryByName(categoryName);
         if (category != null) {
-            view.getProductComboBox().setItems(FXCollections.observableArrayList(
-                    category.getProducts().stream()
-                            .map(Product::getName)
-                            .collect(Collectors.toList())
-            ));
+            List<String> productNames = category.getProducts().stream()
+                    .map(Product::getName)
+                    .collect(Collectors.toList());
+
+            view.getProductComboBox().setItems(FXCollections.observableArrayList(productNames));
             view.getProductComboBox().getSelectionModel().clearSelection();
         }
     }
 
+    /**
+     * Обрабатывает выбор продукта:
+     * - сбрасывает состояние
+     * - отображает детали выбранного продукта
+     */
     private void handleProductSelection() {
         String category = view.getTypeComboBox().getValue();
         String product = view.getProductComboBox().getValue();
@@ -72,37 +105,50 @@ public class EskoderController {
         }
     }
 
+    /**
+     * Показывает фасовки и детали продукта
+     */
     private void showProductDetails(String categoryName, String productName) {
         view.clearDetails();
+
         Product product = findProductByName(categoryName, productName);
         if (product != null) {
-            view.addProductDetails(product);
-            view.adjustWindowHeight(product.getItems().size() + 1);
+            view.addProductDetails(product); // один метод, добавляющий заголовок и фасовки
+            view.adjustWindowHeight(product.getItems().size() + 1); // +1 — заголовок
         }
     }
 
+    /**
+     * Поиск продуктов по имени (без учёта регистра)
+     */
     private void handleSearch() {
+        // Очищаем выбор в комбобоксах
         view.getTypeComboBox().getSelectionModel().clearSelection();
         view.getProductComboBox().getSelectionModel().clearSelection();
 
+        // Получаем строку поиска и очищаем старые детали
         String query = view.getSearchField().getText().trim().toLowerCase();
         view.clearDetails();
 
+        // Если строка пуста — сбрасываем в нормальный режим
         if (query.isEmpty()) {
             resetToNormalMode();
             return;
         }
 
+        // Фильтруем продукты по имени
         List<Product> foundProducts = categories.stream()
                 .flatMap(c -> c.getProducts().stream())
                 .filter(p -> p.getName().toLowerCase().contains(query))
                 .collect(Collectors.toList());
 
+        // Если ничего не найдено — показать сообщение
         if (foundProducts.isEmpty()) {
             Label noResults = new Label("Ничего не найдено");
             view.getDetailsBox().getChildren().add(noResults);
             view.adjustWindowHeight(1);
         } else {
+            // Иначе — отобразить все найденные продукты и их фасовки
             int totalItems = 0;
             for (Product product : foundProducts) {
                 view.addProductDetails(product);
@@ -112,12 +158,21 @@ public class EskoderController {
         }
     }
 
+    /**
+     * Сброс интерфейса в "чистое" состояние:
+     * - очищаем детали
+     * - сбрасываем поле поиска
+     * - возвращаем высоту окна
+     */
     private void resetToNormalMode() {
         view.clearDetails();
         view.getSearchField().clear();
-        view.adjustWindowHeight(0); // Восстанавливаем исходную высоту
+        view.adjustWindowHeight(0);
     }
 
+    /**
+     * Поиск категории по имени (точное совпадение)
+     */
     private Category findCategoryByName(String name) {
         return categories.stream()
                 .filter(c -> c.getName().equals(name))
@@ -125,6 +180,9 @@ public class EskoderController {
                 .orElse(null);
     }
 
+    /**
+     * Поиск продукта по имени в пределах конкретной категории
+     */
     private Product findProductByName(String categoryName, String productName) {
         Category category = findCategoryByName(categoryName);
         if (category != null) {

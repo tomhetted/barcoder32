@@ -83,14 +83,6 @@ public class EskoderView {
         adjustWindowHeight(0);
     }
 
-    // Геттеры
-    public ComboBox<String> getTypeComboBox()   { return typeComboBox; }
-    public ComboBox<String> getProductComboBox(){ return productComboBox; }
-    public VBox getDetailsBox()                 { return detailsBox; }
-    public TextField getSearchField()           { return searchField; }
-    public Button getSearchButton()             { return searchButton; }
-    public VBox getLayout()                     { return mainLayout; }
-
     // Работа с деталями
     public void clearDetails() {
         detailsBox.getChildren().clear();
@@ -100,13 +92,13 @@ public class EskoderView {
         detailsBox.getChildren().add(row);
     }
 
-    public void addProductDetails(Product product) {
-        addProductHeader(product.getName());
-        for (Item item : product.getItems()) {
-            HBox row = createDetailRow(item.getId(), item.getVolume());
-            addDetailRow(row);
+        public void addProductDetails(Product product) {
+            addProductHeader(product.getName());
+            for (Item item : product.getItems()) {
+                HBox row = createDetailRow(item.getId(), item.getVolume());
+                addDetailRow(row);
+            }
         }
-    }
 
     public void addProductHeader(String productName) {
         Label header = new Label(productName);
@@ -132,4 +124,11 @@ public class EskoderView {
         row.setAlignment(Pos.CENTER_LEFT);
         return row;
     }
+
+    public ComboBox<String> getTypeComboBox()   { return typeComboBox; }
+    public ComboBox<String> getProductComboBox(){ return productComboBox; }
+    public VBox getDetailsBox()                 { return detailsBox; }
+    public TextField getSearchField()           { return searchField; }
+    public Button getSearchButton()             { return searchButton; }
+    public VBox getLayout()                     { return mainLayout; }
 }
