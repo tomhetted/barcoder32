@@ -76,12 +76,8 @@ public class EskoderController {
         view.clearDetails();
         Product product = findProductByName(categoryName, productName);
         if (product != null) {
-            view.addProductHeader(productName);
-            product.getItems().forEach(item -> {
-                HBox row = EskoderView.createDetailRow(item.getId(), item.getVolume());
-                view.addDetailRow(row);
-            });
-            view.adjustWindowHeight(product.getItems().size() + 1); // +1 для заголовка
+            view.addProductDetails(product);
+            view.adjustWindowHeight(product.getItems().size() + 1);
         }
     }
 
@@ -109,14 +105,8 @@ public class EskoderController {
         } else {
             int totalItems = 0;
             for (Product product : foundProducts) {
-                view.addProductHeader(product.getName());
-                totalItems++; // Заголовок
-
-                for (Item item : product.getItems()) {
-                    HBox row = EskoderView.createDetailRow(item.getId(), item.getVolume());
-                    view.addDetailRow(row);
-                    totalItems++; // Каждый элемент
-                }
+                view.addProductDetails(product);
+                totalItems += product.getItems().size() + 1;
             }
             view.adjustWindowHeight(totalItems);
         }

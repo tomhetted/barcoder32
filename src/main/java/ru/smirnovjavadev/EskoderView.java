@@ -100,6 +100,14 @@ public class EskoderView {
         detailsBox.getChildren().add(row);
     }
 
+    public void addProductDetails(Product product) {
+        addProductHeader(product.getName());
+        for (Item item : product.getItems()) {
+            HBox row = createDetailRow(item.getId(), item.getVolume());
+            addDetailRow(row);
+        }
+    }
+
     public void addProductHeader(String productName) {
         Label header = new Label(productName);
         detailsBox.getChildren().add(header);
