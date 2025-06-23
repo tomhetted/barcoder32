@@ -1,6 +1,5 @@
 package ru.smirnovjavadev;
 
-
 import java.util.List;
 
 public class Product {

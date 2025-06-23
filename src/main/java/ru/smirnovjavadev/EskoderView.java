@@ -16,7 +16,8 @@ import javafx.scene.layout.VBox;
 
 public class EskoderView {
     // Элементы интерфейса
-    private final ComboBox<String> typeComboBox = new ComboBox<>(); // Выбор типа ЛКМ
+    private final ComboBox<String> producerComboBox = new ComboBox<>(); // Выбор поставщика
+    private final ComboBox<String> categoryComboBox = new ComboBox<>(); // Выбор типа ЛКМ
     private final ComboBox<String> productComboBox = new ComboBox<>(); // Выбор продукта
     private final VBox detailsBox = new VBox(5); // Контейнер для отображения деталей
     private final TextField searchField = new TextField(); // Поле поиска
@@ -41,7 +42,8 @@ public class EskoderView {
      */
     private void setupUI() {
         // Установка текста-подсказки
-        typeComboBox.setPromptText("Выберите тип ЛКМ");
+        producerComboBox.setPromptText("Выберите поставщика");
+        categoryComboBox.setPromptText("Выберите тип ЛКМ");
         productComboBox.setPromptText("Выберите продукт");
         searchField.setPromptText("Поиск по названию продукта");
 
@@ -73,7 +75,8 @@ public class EskoderView {
         // Добавление компонентов в основной контейнер
         layout.getChildren().addAll(
                 searchBox, // Панель поиска
-                typeComboBox, // Выбор типа
+                producerComboBox, // Выбор поставщика
+                categoryComboBox, // Выбор типа
                 productComboBox, // Выбор продукта
                 scrollPane // Прокручиваемая область с деталями
         );
@@ -174,8 +177,9 @@ public class EskoderView {
     }
 
     // Геттеры для доступа к компонентам
-    public ComboBox<String> getTypeComboBox()   { return typeComboBox; }
-    public ComboBox<String> getProductComboBox(){ return productComboBox; }
+    public ComboBox<String> getProducerComboBox() { return producerComboBox; }
+    public ComboBox<String> getCategoryComboBox() { return categoryComboBox; }
+    public ComboBox<String> getProductComboBox() { return productComboBox; }
     public VBox getDetailsBox()                 { return detailsBox; }
     public TextField getSearchField()           { return searchField; }
     public Button getSearchButton()             { return searchButton; }

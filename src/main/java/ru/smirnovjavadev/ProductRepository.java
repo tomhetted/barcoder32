@@ -15,7 +15,7 @@ public class ProductRepository {
     // Имя XML-файла с данными (располагается рядом с программой)
     private static final String XML_FILE_NAME = "products.xml";
     // Кэш для хранения данных после первой загрузки
-    private static List<Category> dataCache = null;
+    private static Catalog dataCache = null;
     // Время последнего изменения файла
     private static long lastModifiedTime = 0;
 
@@ -23,7 +23,7 @@ public class ProductRepository {
      * Возвращает данные о продуктах, загружая их из XML при первом вызове
      * или при изменении файла
      */
-    public static List<Category> getProducts() {
+    public static Catalog getCatalog() {
         File xmlFile = getXmlFile();
         checkFileExists(xmlFile);
 
@@ -84,26 +84,46 @@ public class ProductRepository {
     /**
      * Основной метод загрузки данных из XML
      */
-    private static List<Category> loadDataFromXml(File xmlFile) {
+    private static Catalog loadDataFromXml(File xmlFile) {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(xmlFile);
             doc.getDocumentElement().normalize();
 
-            List<Category> categories = new ArrayList<>();
-            NodeList categoryNodes = doc.getElementsByTagName("category");
+            List<Producer> producers = new ArrayList<>();
+            NodeList producerNodes = doc.getElementsByTagName("producer");
 
-            for (int i = 0; i < categoryNodes.getLength(); i++) {
-                Node categoryNode = categoryNodes.item(i);
-                if (categoryNode.getNodeType() == Node.ELEMENT_NODE) {
-                    categories.add(processCategory((Element) categoryNode));
+            for (int i = 0; i < producerNodes.getLength(); i++) {
+                Node producerNode = producerNodes.item(i);
+                if (producerNode.getNodeType() == Node.ELEMENT_NODE) {
+                    producers.add(processProducer((Element) producerNode));
                 }
             }
-            return categories;
+
+            return new Catalog(producers);
 
         } catch (Exception e) {
             throw new RuntimeException("Ошибка чтения XML", e);
         }
+    }
+
+    /**
+     * Обрабатывает категории поставщика
+     */
+    private static Producer processProducer(Element producerElement) {
+        String producerName = producerElement.getAttribute("name");
+        List<Category> categories = new ArrayList<>();
+        NodeList categoryNodes = producerElement.getElementsByTagName("category");
+
+        for (int i = 0; i < categoryNodes.getLength(); i++) {
+            Node categoryNode = categoryNodes.item(i);
+            if (categoryNode.getParentNode().isSameNode(producerElement) &&
+                    categoryNode.getNodeType() == Node.ELEMENT_NODE) {
+                categories.add(processCategory((Element) categoryNode));
+            }
+        }
+
+        return new Producer(producerName, categories);
     }
 
     /**
@@ -116,10 +136,12 @@ public class ProductRepository {
 
         for (int j = 0; j < productNodes.getLength(); j++) {
             Node productNode = productNodes.item(j);
-            if (productNode.getNodeType() == Node.ELEMENT_NODE) {
+            if (productNode.getParentNode().isSameNode(categoryElement) &&
+                    productNode.getNodeType() == Node.ELEMENT_NODE) {
                 products.add(processProduct((Element) productNode));
             }
         }
+
         return new Category(categoryName, products);
     }
 
@@ -133,10 +155,12 @@ public class ProductRepository {
 
         for (int k = 0; k < itemNodes.getLength(); k++) {
             Node itemNode = itemNodes.item(k);
-            if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
+            if (itemNode.getParentNode().isSameNode(productElement) &&
+                    itemNode.getNodeType() == Node.ELEMENT_NODE) {
                 items.add(processItem((Element) itemNode));
             }
         }
+
         return new Product(productName, items);
     }
 

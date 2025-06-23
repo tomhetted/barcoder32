@@ -10,56 +10,60 @@ import java.util.stream.Collectors;
  * Контроллер, управляющий логикой приложения:
  * - Обрабатывает действия пользователя (выбор, поиск)
  * - Взаимодействует с View (EskoderView)
- * - Получает данные из модели (список Category и Product)
+ * - Получает данные из модели (список Producer, Category и Product)
  */
 public class EskoderController {
 
     private final EskoderView view;               // UI-компоненты
-    private final List<Category> categories;      // Модель данных: список категорий с продуктами
+    private final Catalog catalog;      // // Модель данных: список производителей с категориями и продуктами
 
     /**
      * Конструктор инициализирует контроллер:
      * - Запускает установку обработчиков
      * - Заполняет ComboBox типов
      */
-    public EskoderController(EskoderView view, List<Category> categories) {
+    public EskoderController(EskoderView view, Catalog catalog) {
         this.view = view;
-        this.categories = categories;
+        this.catalog = catalog;
         setupEventHandlers();
-        initTypeComboBox();
+        initProducerComboBox();
     }
 
     /**
-     * Заполняет ComboBox типов (категорий)
+     * Инициализирует ComboBox с производителями (поставщиками)
      */
-    private void initTypeComboBox() {
-        List<String> categoryNames = categories.stream()
-                .map(Category::getName)
+    private void initProducerComboBox() {
+        List<String> producerNames = catalog.getProducers().stream()
+                .map(Producer::getName)
                 .collect(Collectors.toList());
 
-        view.getTypeComboBox().setItems(FXCollections.observableArrayList(categoryNames));
+        view.getProducerComboBox().setItems(FXCollections.observableArrayList(producerNames));
     }
 
     /**
      * Назначает обработчики событий для всех интерактивных элементов UI
      */
     private void setupEventHandlers() {
-        // Обработка выбора типа (категории)
-        view.getTypeComboBox().setOnAction(e -> handleCategorySelection());
-
-        // Обработка выбора продукта
+        view.getProducerComboBox().setOnAction(e -> handleProducerSelection());
+        view.getCategoryComboBox().setOnAction(e -> handleCategorySelection());
         view.getProductComboBox().setOnAction(e -> handleProductSelection());
 
-        // Обработка поиска по нажатию кнопки или Enter в поле
         view.getSearchButton().setOnAction(e -> handleSearch());
         view.getSearchField().setOnAction(e -> handleSearch());
 
-        // Сброс в обычный режим при очистке поля поиска
         view.getSearchField().textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.isEmpty()) {
                 resetToNormalMode();
             }
         });
+    }
+
+    private void handleProducerSelection() {
+        String selectedProducer = view.getProducerComboBox().getValue();
+        if (selectedProducer != null) {
+            resetToNormalMode();
+            updateCategoryList(selectedProducer);
+        }
     }
 
     /**
@@ -68,18 +72,19 @@ public class EskoderController {
      * - загружает список продуктов для выбранной категории
      */
     private void handleCategorySelection() {
-        String selectedCategory = view.getTypeComboBox().getValue();
-        if (selectedCategory != null) {
+        String selectedProducer = view.getProducerComboBox().getValue();
+        String selectedCategory = view.getCategoryComboBox().getValue();
+        if (selectedProducer != null && selectedCategory != null) {
             resetToNormalMode();
-            updateProductList(selectedCategory);
+            updateProductList(selectedProducer, selectedCategory);
         }
     }
 
     /**
      * Заполняет ComboBox продуктов для указанной категории
      */
-    private void updateProductList(String categoryName) {
-        Category category = findCategoryByName(categoryName);
+    private void updateProductList(String producerName, String categoryName) {
+        Category category = findCategoryByName(producerName, categoryName);
         if (category != null) {
             List<String> productNames = category.getProducts().stream()
                     .map(Product::getName)
@@ -91,30 +96,47 @@ public class EskoderController {
     }
 
     /**
+     * Заполняет ComboBox категорий для поставщика
+     */
+    private void updateCategoryList(String producerName) {
+        Producer producer = findProducerByName(producerName);
+        if (producer != null) {
+            List<String> categoryNames = producer.getCategories().stream()
+                    .map(Category::getName)
+                    .collect(Collectors.toList());
+
+            view.getCategoryComboBox().setItems(FXCollections.observableArrayList(categoryNames));
+            view.getCategoryComboBox().getSelectionModel().clearSelection();
+            view.getProductComboBox().getItems().clear();
+            view.getProductComboBox().getSelectionModel().clearSelection();
+        }
+    }
+
+    /**
      * Обрабатывает выбор продукта:
      * - сбрасывает состояние
      * - отображает детали выбранного продукта
      */
     private void handleProductSelection() {
-        String category = view.getTypeComboBox().getValue();
+        String producer = view.getProducerComboBox().getValue();
+        String category = view.getCategoryComboBox().getValue();
         String product = view.getProductComboBox().getValue();
 
-        if (category != null && product != null) {
+        if (producer != null && category != null && product != null) {
             resetToNormalMode();
-            showProductDetails(category, product);
+            showProductDetails(producer, category, product);
         }
     }
 
     /**
      * Показывает фасовки и детали продукта
      */
-    private void showProductDetails(String categoryName, String productName) {
+    private void showProductDetails(String producerName, String categoryName, String productName) {
         view.clearDetails();
-
-        Product product = findProductByName(categoryName, productName);
+        Product product = findProductByName(producerName, categoryName, productName);
         if (product != null) {
-            view.addProductDetails(product); // один метод, добавляющий заголовок и фасовки
-            view.adjustWindowHeight(product.getItems().size() + 1); // +1 — заголовок
+            view.addProductDetails(product);
+            view.adjustWindowHeight(product.getItems().size() + 1);
         }
     }
 
@@ -122,33 +144,28 @@ public class EskoderController {
      * Поиск продуктов по имени (без учёта регистра)
      */
     private void handleSearch() {
-        // Очищаем выбор в комбобоксах
-        view.getTypeComboBox().getSelectionModel().clearSelection();
+        view.getProducerComboBox().getSelectionModel().clearSelection();
+        view.getCategoryComboBox().getSelectionModel().clearSelection();
         view.getProductComboBox().getSelectionModel().clearSelection();
 
-        // Получаем строку поиска и очищаем старые детали
         String query = view.getSearchField().getText().trim().toLowerCase();
         view.clearDetails();
 
-        // Если строка пуста — сбрасываем в нормальный режим
         if (query.isEmpty()) {
             resetToNormalMode();
             return;
         }
 
-        // Фильтруем продукты по имени
-        List<Product> foundProducts = categories.stream()
+        List<Product> foundProducts = catalog.getProducers().stream()
+                .flatMap(p -> p.getCategories().stream())
                 .flatMap(c -> c.getProducts().stream())
                 .filter(p -> p.getName().toLowerCase().contains(query))
                 .collect(Collectors.toList());
 
-        // Если ничего не найдено — показать сообщение
         if (foundProducts.isEmpty()) {
-            Label noResults = new Label("Ничего не найдено");
-            view.getDetailsBox().getChildren().add(noResults);
+            view.getDetailsBox().getChildren().add(new Label("Ничего не найдено"));
             view.adjustWindowHeight(1);
         } else {
-            // Иначе — отобразить все найденные продукты и их фасовки
             int totalItems = 0;
             for (Product product : foundProducts) {
                 view.addProductDetails(product);
@@ -170,21 +187,32 @@ public class EskoderController {
         view.adjustWindowHeight(0);
     }
 
-    /**
-     * Поиск категории по имени (точное совпадение)
-     */
-    private Category findCategoryByName(String name) {
-        return categories.stream()
-                .filter(c -> c.getName().equals(name))
+    private Producer findProducerByName(String name) {
+        return catalog.getProducers().stream()
+                .filter(p -> p.getName().equals(name))
                 .findFirst()
                 .orElse(null);
     }
 
     /**
+     * Поиск категории по имени (точное совпадение)
+     */
+    private Category findCategoryByName(String producerName, String categoryName) {
+        Producer producer = findProducerByName(producerName);
+        if (producer != null) {
+            return producer.getCategories().stream()
+                    .filter(c -> c.getName().equals(categoryName))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
+
+    /**
      * Поиск продукта по имени в пределах конкретной категории
      */
-    private Product findProductByName(String categoryName, String productName) {
-        Category category = findCategoryByName(categoryName);
+    private Product findProductByName(String producerName, String categoryName, String productName) {
+        Category category = findCategoryByName(producerName, categoryName);
         if (category != null) {
             return category.getProducts().stream()
                     .filter(p -> p.getName().equals(productName))
