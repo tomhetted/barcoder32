@@ -12,7 +12,6 @@ public class Product {
         this.items = items;
     }
 
-    // Геттеры и сеттеры
     public String getName() { return name; }
     public List<Item> getItems() { return items; }
 }

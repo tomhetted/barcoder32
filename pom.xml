@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ru.smirnovjavadev</groupId>
@@ -17,21 +17,6 @@
   </properties>
 
   <dependencies>
-    <dependency>
-        <groupId>javax.xml</groupId>
-        <artifactId>jaxp-api</artifactId>
-        <version>1.4.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>18.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>19</version>
-    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -62,6 +47,11 @@
     <resources>
       <resource>
         <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.png</include>
+          <include>**/*.xml</include>
+          <include>**/*.css</include>
+        </includes>
       </resource>
     </resources>
     <plugins>
@@ -77,6 +67,10 @@
             <manifest>
               <mainClass>ru.smirnovjavadev.Main</mainClass>
             </manifest>
+            <manifestEntries>
+              <Bundle-Icon>icon.png</Bundle-Icon>
+              <Icon-Image>icon.png</Icon-Image>
+            </manifestEntries>
           </archive>
         </configuration>
         <executions>
@@ -88,6 +82,35 @@
           </execution>
         </executions>
       </plugin>
+<!--      <plugin>-->
+<!--        <groupId>com.akathist.maven.plugins.launch4j</groupId>-->
+<!--        <artifactId>launch4j-maven-plugin</artifactId>-->
+<!--        <version>1.7.25</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>l4j-clui</id>-->
+<!--            <phase>package</phase>-->
+<!--            <goals>-->
+<!--              <goal>launch4j</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--        <configuration>-->
+<!--          <outfile>eskoder.exe</outfile>-->
+<!--          <jar>target/eskoder-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>-->
+<!--          <dontWrapJar>false</dontWrapJar>-->
+<!--          <headerType>gui</headerType>-->
+<!--          <classPath>-->
+<!--            <mainClass>ru.smirnovjavadev.Main</mainClass>-->
+<!--          </classPath>-->
+<!--          <icon>C:/JDK/icon.ico</icon>-->
+<!--          <jre>-->
+<!--            &lt;!&ndash; Можно указать min/max версии Java &ndash;&gt;-->
+<!--            <minVersion>1.8.0</minVersion>-->
+<!--            &lt;!&ndash; Здесь путь можно оставить пустым, если не встраиваешь JRE &ndash;&gt;-->
+<!--          </jre>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 </project>

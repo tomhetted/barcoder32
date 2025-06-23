@@ -2,6 +2,7 @@ package ru.smirnovjavadev;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -22,7 +23,8 @@ public class Main extends Application {
 
         // Создание сцены и отображение
         Scene scene = new Scene(view.getLayout());
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/bluestyle.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/violetstyle.css")).toExternalForm());
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/icon.png")));
         primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(400);
         primaryStage.setMaxHeight(700);

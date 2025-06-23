@@ -11,7 +11,6 @@ public class Category {
         this.products = products;
     }
 
-    // Геттеры и сеттеры
     public String getName() { return name; }
     public List<Product> getProducts() { return products; }
 }

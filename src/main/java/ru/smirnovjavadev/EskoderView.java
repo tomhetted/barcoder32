@@ -15,116 +15,165 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class EskoderView {
-    private final ComboBox<String> typeComboBox = new ComboBox<>();
-    private final ComboBox<String> productComboBox = new ComboBox<>();
-    private final VBox detailsBox = new VBox(5);
-    private final TextField searchField = new TextField();
-    private final Button searchButton = new Button("Найти");
-    private final ScrollPane scrollPane = new ScrollPane();
-    private final VBox mainLayout;
-    private final double BASE_WINDOW_HEIGHT = 400;
-    private final double BASE_WINDOW_WIDTH = 434;
-    private final double ITEM_HEIGHT = 30;
-    private final double MAX_WINDOW_HEIGHT = 700;
+    // Элементы интерфейса
+    private final ComboBox<String> typeComboBox = new ComboBox<>(); // Выбор типа ЛКМ
+    private final ComboBox<String> productComboBox = new ComboBox<>(); // Выбор продукта
+    private final VBox detailsBox = new VBox(5); // Контейнер для отображения деталей
+    private final TextField searchField = new TextField(); // Поле поиска
+    private final Button searchButton = new Button("Найти"); // Кнопка поиска
+    private final ScrollPane scrollPane = new ScrollPane(); // Прокрутка для detailsBox
+    private final VBox mainLayout; // Основной контейнер компоновки
 
+    // Константы размеров окна
+    private final double BASE_WINDOW_HEIGHT = 400; // Базовая высота окна
+    private final double BASE_WINDOW_WIDTH = 434; // Базовая ширина окна
+    private final double ITEM_HEIGHT = 30; // Высота одной строки с деталями
+    private final double MAX_WINDOW_HEIGHT = 700; // Максимальная высота окна
 
     public EskoderView() {
-        setupUI();
-        mainLayout = createMainLayout();
-        detailsBox.setId("detailsBox"); // для CSS #detailsBox
+        setupUI(); // Инициализация UI компонентов
+        mainLayout = createMainLayout(); // Создание основной компоновки
+        detailsBox.setId("detailsBox"); // Установка ID для CSS стилизации
     }
 
+    /**
+     * Настройка базовых параметров UI компонентов
+     */
     private void setupUI() {
+        // Установка текста-подсказки
         typeComboBox.setPromptText("Выберите тип ЛКМ");
         productComboBox.setPromptText("Выберите продукт");
         searchField.setPromptText("Поиск по названию продукта");
 
-        scrollPane.setContent(detailsBox);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPane.setMinHeight(150);
+        // Настройка ScrollPane
+        scrollPane.setContent(detailsBox); // Помещаем VBox в ScrollPane
+        scrollPane.setFitToWidth(true); // Автоподгон по ширине
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Отключаем горизонтальную прокрутку
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Вертикальная прокрутка при необходимости
+        scrollPane.setMinHeight(150); // Минимальная высота области
 
-        detailsBox.setPadding(new Insets(10));
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+        // Настройка detailsBox
+        detailsBox.setPadding(new Insets(10)); // Отступы внутри контейнера
+        VBox.setVgrow(scrollPane, Priority.ALWAYS); // Растягиваем ScrollPane по вертикали
     }
 
+    /**
+     * Создание основной компоновки интерфейса
+     */
     private VBox createMainLayout() {
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(10));
-        layout.setPrefSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+        VBox layout = new VBox(10); // Основной контейнер с отступами 10px
+        layout.setPadding(new Insets(10)); // Внутренние отступы
+        layout.setPrefSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT); // Установка базовых размеров
 
-        HBox searchBox = new HBox(10, searchField, searchButton);
-        searchBox.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(searchField, Priority.ALWAYS);
+        // Панель поиска
+        HBox searchBox = new HBox(10, searchField, searchButton); // Горизонтальное расположение
+        searchBox.setAlignment(Pos.CENTER_LEFT); // Выравнивание по левому краю
+        HBox.setHgrow(searchField, Priority.ALWAYS); // Поле поиска растягивается по ширине
 
+        // Добавление компонентов в основной контейнер
         layout.getChildren().addAll(
-                searchBox,
-                typeComboBox,
-                productComboBox,
-                scrollPane
+                searchBox, // Панель поиска
+                typeComboBox, // Выбор типа
+                productComboBox, // Выбор продукта
+                scrollPane // Прокручиваемая область с деталями
         );
 
         return layout;
     }
 
+    /**
+     * Подгон высоты окна под количество элементов
+     * @param itemCount - количество отображаемых элементов
+     */
     public void adjustWindowHeight(int itemCount) {
+        // Расчет новой высоты
         double calculatedHeight = BASE_WINDOW_HEIGHT + (itemCount * ITEM_HEIGHT);
+        // Ограничение минимальной и максимальной высоты
         double newHeight = Math.min(Math.max(calculatedHeight, BASE_WINDOW_HEIGHT), MAX_WINDOW_HEIGHT);
 
+        // Применение новой высоты
         Scene scene = mainLayout.getScene();
         if (scene != null && scene.getWindow() != null) {
             scene.getWindow().setHeight(newHeight);
-            scrollPane.setVvalue(0);
+            scrollPane.setVvalue(0); // Прокрутка в начало
         }
     }
 
+    /**
+     * Сброс высоты окна к базовому значению
+     */
     public void resetWindowHeight() {
         adjustWindowHeight(0);
     }
 
-    // Работа с деталями
+    /**
+     * Очистка области с деталями
+     */
     public void clearDetails() {
         detailsBox.getChildren().clear();
     }
 
+    /**
+     * Добавление строки с деталями
+     * @param row - готовая строка (HBox)
+     */
     public void addDetailRow(HBox row) {
         detailsBox.getChildren().add(row);
     }
 
-        public void addProductDetails(Product product) {
-            addProductHeader(product.getName());
-            for (Item item : product.getItems()) {
-                HBox row = createDetailRow(item.getId(), item.getVolume());
-                addDetailRow(row);
-            }
+    /**
+     * Добавление полной информации о продукте
+     * @param product - объект продукта
+     */
+    public void addProductDetails(Product product) {
+        addProductHeader(product.getName()); // Заголовок с именем
+        for (Item item : product.getItems()) {
+            HBox row = createDetailRow(item.getId(), item.getVolume()); // Строка для каждого варианта
+            addDetailRow(row);
         }
+    }
 
+    /**
+     * Добавление заголовка продукта
+     * @param productName - название продукта
+     */
     public void addProductHeader(String productName) {
         Label header = new Label(productName);
         detailsBox.getChildren().add(header);
     }
 
+    /**
+     * Создание строки с деталями фасовки
+     * @param id - идентификатор
+     * @param volume - объем фасовки
+     * @return готовая строка (HBox)
+     */
     public static HBox createDetailRow(int id, String volume) {
+        // Поле с ID (нередактируемое)
         TextField idField = new TextField(String.valueOf(id));
         idField.setEditable(false);
         idField.setPrefWidth(80);
 
+        // Метка с объемом
         Label volumeLabel = new Label(volume);
         volumeLabel.setPrefWidth(100);
 
+        // Кнопка копирования
         Button copyButton = new Button("Копировать");
         copyButton.setOnAction(e -> {
+            // Копирование ID в буфер обмена
             ClipboardContent content = new ClipboardContent();
             content.putString(String.valueOf(id));
             Clipboard.getSystemClipboard().setContent(content);
         });
 
+        // Сборка строки
         HBox row = new HBox(10, copyButton, idField, volumeLabel);
-        row.setAlignment(Pos.CENTER_LEFT);
+        row.setAlignment(Pos.CENTER_LEFT); // Выравнивание по центру-слева
         return row;
     }
 
+    // Геттеры для доступа к компонентам
     public ComboBox<String> getTypeComboBox()   { return typeComboBox; }
     public ComboBox<String> getProductComboBox(){ return productComboBox; }
     public VBox getDetailsBox()                 { return detailsBox; }
