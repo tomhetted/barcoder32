@@ -146,7 +146,9 @@ public class EskoderController {
     private void handleSearch() {
         view.getProducerComboBox().getSelectionModel().clearSelection();
         view.getCategoryComboBox().getSelectionModel().clearSelection();
+        view.getCategoryComboBox().getItems().clear();
         view.getProductComboBox().getSelectionModel().clearSelection();
+        view.getProductComboBox().getItems().clear();
 
         String query = view.getSearchField().getText().trim().toLowerCase();
         view.clearDetails();
