@@ -23,7 +23,7 @@ public class Main extends Application {
 
         // Создание сцены и отображение
         Scene scene = new Scene(view.getLayout());
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/violetstyle.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/bluestyle.css")).toExternalForm());
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/icon.png")));
         primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(400);

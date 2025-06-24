@@ -82,35 +82,35 @@
           </execution>
         </executions>
       </plugin>
-<!--      <plugin>-->
-<!--        <groupId>com.akathist.maven.plugins.launch4j</groupId>-->
-<!--        <artifactId>launch4j-maven-plugin</artifactId>-->
-<!--        <version>1.7.25</version>-->
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>l4j-clui</id>-->
-<!--            <phase>package</phase>-->
-<!--            <goals>-->
-<!--              <goal>launch4j</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
-<!--        </executions>-->
-<!--        <configuration>-->
-<!--          <outfile>eskoder.exe</outfile>-->
-<!--          <jar>target/eskoder-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>-->
-<!--          <dontWrapJar>false</dontWrapJar>-->
-<!--          <headerType>gui</headerType>-->
-<!--          <classPath>-->
-<!--            <mainClass>ru.smirnovjavadev.Main</mainClass>-->
-<!--          </classPath>-->
-<!--          <icon>C:/JDK/icon.ico</icon>-->
-<!--          <jre>-->
-<!--            &lt;!&ndash; Можно указать min/max версии Java &ndash;&gt;-->
-<!--            <minVersion>1.8.0</minVersion>-->
-<!--            &lt;!&ndash; Здесь путь можно оставить пустым, если не встраиваешь JRE &ndash;&gt;-->
-<!--          </jre>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
+      <plugin>
+        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+        <artifactId>launch4j-maven-plugin</artifactId>
+        <version>1.7.25</version>
+        <executions>
+          <execution>
+            <id>l4j-clui</id>
+            <phase>package</phase>
+            <goals>
+              <goal>launch4j</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <outfile>eskoder.exe</outfile>
+          <jar>target/eskoder-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
+          <dontWrapJar>false</dontWrapJar>
+          <headerType>gui</headerType>
+          <classPath>
+            <mainClass>ru.smirnovjavadev.Main</mainClass>
+          </classPath>
+          <icon>C:/JDK/icon.ico</icon>
+          <jre>
+            <!-- Можно указать min/max версии Java -->
+            <minVersion>1.8.0</minVersion>
+            <!-- Здесь путь можно оставить пустым, если не встраиваешь JRE -->
+          </jre>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

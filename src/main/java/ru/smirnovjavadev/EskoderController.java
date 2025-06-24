@@ -125,6 +125,7 @@ public class EskoderController {
         // Очищаем выбор в комбобоксах
         view.getTypeComboBox().getSelectionModel().clearSelection();
         view.getProductComboBox().getSelectionModel().clearSelection();
+        view.getProductComboBox().getItems().clear();
 
         // Получаем строку поиска и очищаем старые детали
         String query = view.getSearchField().getText().trim().toLowerCase();
