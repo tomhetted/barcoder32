@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-Icon: icon.png
+Build-Jdk-Spec: 1.8
+Icon-Image: icon.png
+Created-By: Maven Archiver 3.6.0
+Main-Class: ru.smirnovjavadev.Main
+

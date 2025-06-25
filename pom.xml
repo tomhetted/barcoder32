@@ -105,9 +105,8 @@
           </classPath>
           <icon>C:/JDK/icon.ico</icon>
           <jre>
-            <!-- Можно указать min/max версии Java -->
             <minVersion>1.8.0</minVersion>
-            <!-- Здесь путь можно оставить пустым, если не встраиваешь JRE -->
+            <path>jre</path> <!-- Эта опция работает -->
           </jre>
         </configuration>
       </plugin>
