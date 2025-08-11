@@ -29,7 +29,7 @@ public class Main extends Application {
         primaryStage.setMinWidth(450);
         primaryStage.setMinHeight(400);
         primaryStage.setMaxHeight(700);
-        primaryStage.setTitle("Колеровочные баркоды Eskaro");
+        primaryStage.setTitle("Колеровочные баркоды");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
