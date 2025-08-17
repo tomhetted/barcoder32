@@ -1,18 +1,16 @@
 package ru.smirnovjavadev;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class EskoderView {
     // Элементы интерфейса
@@ -160,11 +158,31 @@ public class EskoderView {
 
         // Кнопка копирования
         Button copyButton = new Button("Копировать");
-        copyButton.setOnAction(e -> {
-            // Копирование ID в буфер обмена
-            ClipboardContent content = new ClipboardContent();
-            content.putString(String.valueOf(id));
-            Clipboard.getSystemClipboard().setContent(content);
+        copyButton.setOnAction(event -> {
+            String idToCopy = idField.getText();
+            if (idToCopy != null && !idToCopy.isEmpty()) {
+                Clipboard clipboard = Clipboard.getSystemClipboard();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(idToCopy);
+                clipboard.setContent(content);
+
+                // выделим текст в поле
+                idField.requestFocus();
+                idField.selectAll();
+
+                // создаём всплывающий тултип
+                Tooltip tooltip = new Tooltip("Скопировано!");
+                tooltip.setAutoHide(true);
+                tooltip.show(copyButton,
+                        copyButton.localToScreen(copyButton.getBoundsInLocal()).getMinX(),
+                        copyButton.localToScreen(copyButton.getBoundsInLocal()).getMinY() - 30
+                );
+
+                // уберём через 1 секунду
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                pause.setOnFinished(e -> tooltip.hide());
+                pause.play();
+            }
         });
 
         // Сборка строки
