@@ -3,7 +3,9 @@ package ru.smirnovjavadev;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +39,7 @@ public class EskoderController {
                 .map(Producer::getName)
                 .collect(Collectors.toList());
 
-        view.getProducerComboBox().setItems(FXCollections.observableArrayList(producerNames));
+        view.setProducers(producerNames);
     }
 
     /**
@@ -59,10 +61,10 @@ public class EskoderController {
     }
 
     private void handleProducerSelection() {
-        String selectedProducer = view.getProducerComboBox().getValue();
-        if (selectedProducer != null) {
+        String prod = view.getProducerComboBox().getValue();
+        if (prod != null) {
             resetToNormalMode();
-            updateCategoryList(selectedProducer);
+            updateCategoryList(prod);
         }
     }
 
@@ -89,9 +91,7 @@ public class EskoderController {
             List<String> productNames = category.getProducts().stream()
                     .map(Product::getName)
                     .collect(Collectors.toList());
-
-            view.getProductComboBox().setItems(FXCollections.observableArrayList(productNames));
-            view.getProductComboBox().getSelectionModel().clearSelection();
+            view.setProducts(productNames);
         }
     }
 
@@ -104,11 +104,8 @@ public class EskoderController {
             List<String> categoryNames = producer.getCategories().stream()
                     .map(Category::getName)
                     .collect(Collectors.toList());
-
-            view.getCategoryComboBox().setItems(FXCollections.observableArrayList(categoryNames));
-            view.getCategoryComboBox().getSelectionModel().clearSelection();
-            view.getProductComboBox().getItems().clear();
-            view.getProductComboBox().getSelectionModel().clearSelection();
+            view.setCategories(categoryNames);
+            view.setProducts(Collections.emptyList()); // очистим продукты, т.к. категория не выбрана
         }
     }
 
@@ -144,11 +141,8 @@ public class EskoderController {
      * Поиск продуктов по имени (без учёта регистра)
      */
     private void handleSearch() {
-        view.getProducerComboBox().getSelectionModel().clearSelection();
-        view.getCategoryComboBox().getSelectionModel().clearSelection();
-        view.getCategoryComboBox().getItems().clear();
-        view.getProductComboBox().getSelectionModel().clearSelection();
-        view.getProductComboBox().getItems().clear();
+        view.clearCategoryAndProductBoxes(); // вместо ручных .getItems().clear() ...
+        view.getProducerComboBox().getSelectionModel().clearSelection(); // оставляем список producers
 
         String query = view.getSearchField().getText().trim().toLowerCase();
         view.clearDetails();
@@ -161,7 +155,7 @@ public class EskoderController {
         List<Product> foundProducts = catalog.getProducers().stream()
                 .flatMap(p -> p.getCategories().stream())
                 .flatMap(c -> c.getProducts().stream())
-                .filter(p -> p.getName().toLowerCase().contains(query))
+                .filter(p -> p.getName().toLowerCase(Locale.ROOT).contains(query))
                 .collect(Collectors.toList());
 
         if (foundProducts.isEmpty()) {
