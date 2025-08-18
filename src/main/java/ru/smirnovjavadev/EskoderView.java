@@ -1,6 +1,7 @@
 package ru.smirnovjavadev;
 
 import javafx.animation.PauseTransition;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,6 +12,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+
+import java.util.Collections;
+import java.util.List;
 
 public class EskoderView {
     // Элементы интерфейса
@@ -190,6 +194,49 @@ public class EskoderView {
         row.setAlignment(Pos.CENTER_LEFT); // Выравнивание по центру-слева
         return row;
     }
+
+    // ---- Инкапсулированные методы работы с комбобоксами ----
+
+    /** Установить список типов (категорий) */
+    public void setTypes(List<String> types) {
+        if (types == null) types = Collections.emptyList();
+        typeComboBox.setItems(FXCollections.observableArrayList(types));
+        typeComboBox.getSelectionModel().clearSelection();
+        typeComboBox.setDisable(types.isEmpty());
+    }
+
+    /** Установить список продуктов */
+    public void setProducts(List<String> products) {
+        if (products == null) products = Collections.emptyList();
+        productComboBox.setItems(FXCollections.observableArrayList(products));
+        productComboBox.getSelectionModel().clearSelection();
+        productComboBox.setDisable(products.isEmpty());
+    }
+
+    /** Очистить только product box (и selection) — безопасно */
+    public void clearProductBox() {
+        productComboBox.setItems(FXCollections.observableArrayList());
+        productComboBox.getSelectionModel().clearSelection();
+        productComboBox.setDisable(true);
+    }
+
+    /** Полная очистка type+product — используется при поиске */
+    public void clearTypeAndProductBoxes() {
+        typeComboBox.getSelectionModel().clearSelection();
+        typeComboBox.setItems(FXCollections.observableArrayList());
+        typeComboBox.setDisable(true);
+
+        productComboBox.getSelectionModel().clearSelection();
+        productComboBox.setItems(FXCollections.observableArrayList());
+        productComboBox.setDisable(true);
+    }
+
+    /** Очистить только selection (не стирая списки) */
+    public void clearSelectionsOnly() {
+        typeComboBox.getSelectionModel().clearSelection();
+        productComboBox.getSelectionModel().clearSelection();
+    }
+
 
     // Геттеры для доступа к компонентам
     public ComboBox<String> getTypeComboBox()   { return typeComboBox; }

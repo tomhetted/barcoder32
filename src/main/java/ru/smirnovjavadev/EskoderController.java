@@ -1,9 +1,9 @@
 package ru.smirnovjavadev;
 
-import javafx.collections.FXCollections;
 import javafx.scene.control.Label;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -33,11 +33,10 @@ public class EskoderController {
      * Заполняет ComboBox типов (категорий)
      */
     private void initTypeComboBox() {
-        List<String> categoryNames = categories.stream()
+        List<String> names = categories.stream()
                 .map(Category::getName)
                 .collect(Collectors.toList());
-
-        view.getTypeComboBox().setItems(FXCollections.observableArrayList(categoryNames));
+        view.setTypes(names);
     }
 
     /**
@@ -79,14 +78,15 @@ public class EskoderController {
      * Заполняет ComboBox продуктов для указанной категории
      */
     private void updateProductList(String categoryName) {
-        Category category = findCategoryByName(categoryName);
-        if (category != null) {
-            List<String> productNames = category.getProducts().stream()
+        Category c = findCategoryByName(categoryName);
+        if (c != null) {
+            List<String> productNames = c.getProducts().stream()
                     .map(Product::getName)
                     .collect(Collectors.toList());
 
-            view.getProductComboBox().setItems(FXCollections.observableArrayList(productNames));
-            view.getProductComboBox().getSelectionModel().clearSelection();
+            view.setProducts(productNames);
+        } else {
+            view.clearProductBox();
         }
     }
 
@@ -122,13 +122,14 @@ public class EskoderController {
      * Поиск продуктов по имени (без учёта регистра)
      */
     private void handleSearch() {
-        // Очищаем выбор в комбобоксах
-        view.getTypeComboBox().getSelectionModel().clearSelection();
-        view.getProductComboBox().getSelectionModel().clearSelection();
-        view.getProductComboBox().getItems().clear();
+        // При поиске мы хотим очистить type/product списки (но оставить возможность выбрать поставщика в другом варианте)
+        view.clearProductBox();
+        // не трогаем список types (только снимаем выбор) — или используем view.clearTypeAndProductBoxes()
+        view.clearSelectionsOnly();
 
         // Получаем строку поиска и очищаем старые детали
-        String query = view.getSearchField().getText().trim().toLowerCase();
+        String rawQuery = view.getSearchField().getText();
+        final String query = (rawQuery == null ? "" : rawQuery.trim().toLowerCase(Locale.ROOT));
         view.clearDetails();
 
         // Если строка пуста — сбрасываем в нормальный режим
@@ -139,8 +140,8 @@ public class EskoderController {
 
         // Фильтруем продукты по имени
         List<Product> foundProducts = categories.stream()
-                .flatMap(c -> c.getProducts().stream())
-                .filter(p -> p.getName().toLowerCase().contains(query))
+                .flatMap(cat -> cat.getProducts().stream())
+                .filter(prod -> prod.getName().toLowerCase(Locale.ROOT).contains(query))
                 .collect(Collectors.toList());
 
         // Если ничего не найдено — показать сообщение

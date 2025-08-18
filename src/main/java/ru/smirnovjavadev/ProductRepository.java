@@ -23,16 +23,20 @@ public class ProductRepository {
      * Возвращает данные о продуктах, загружая их из XML при первом вызове
      * или при изменении файла
      */
-    public static List<Category> getProducts() {
+    public static synchronized List<Category> getProducts() {
         File xmlFile = getXmlFile();
         checkFileExists(xmlFile);
 
-        if (dataCache == null || xmlFile.lastModified() > lastModifiedTime) {
-            dataCache = loadDataFromXml(xmlFile);
-            lastModifiedTime = xmlFile.lastModified();
+        long currentLastModified = xmlFile.lastModified();
+        if (dataCache == null || currentLastModified > lastModifiedTime) {
+            List<Category> loaded = loadDataFromXml(xmlFile);
+
+            dataCache = Collections.unmodifiableList(loaded);
+            lastModifiedTime = currentLastModified;
         }
         return dataCache;
     }
+
 
     /**
      * Получает файл XML из рабочей директории программы
@@ -110,17 +114,16 @@ public class ProductRepository {
      * Обрабатывает категорию продуктов
      */
     private static Category processCategory(Element categoryElement) {
-        String categoryName = categoryElement.getAttribute("name");
+        String categoryName = categoryElement.getAttribute("name").trim();
         List<Product> products = new ArrayList<>();
-        NodeList productNodes = categoryElement.getElementsByTagName("product");
-
-        for (int j = 0; j < productNodes.getLength(); j++) {
-            Node productNode = productNodes.item(j);
-            if (productNode.getNodeType() == Node.ELEMENT_NODE) {
-                products.add(processProduct((Element) productNode));
+        NodeList children = categoryElement.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node node = children.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE && "product".equals(node.getNodeName())) {
+                products.add(processProduct((Element) node));
             }
         }
-        return new Category(categoryName, products);
+        return new Category(categoryName, Collections.unmodifiableList(new ArrayList<>(products)));
     }
 
     /**
@@ -129,24 +132,29 @@ public class ProductRepository {
     private static Product processProduct(Element productElement) {
         String productName = productElement.getAttribute("name");
         List<Item> items = new ArrayList<>();
-        NodeList itemNodes = productElement.getElementsByTagName("item");
-
-        for (int k = 0; k < itemNodes.getLength(); k++) {
-            Node itemNode = itemNodes.item(k);
-            if (itemNode.getNodeType() == Node.ELEMENT_NODE) {
-                items.add(processItem((Element) itemNode));
+        NodeList children = productElement.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Node node = children.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE && "item".equals(node.getNodeName())) {
+                items.add(processItem((Element) node));
             }
         }
-        return new Product(productName, items);
+        return new Product(productName, Collections.unmodifiableList(items));
     }
 
     /**
      * Обрабатывает отдельную фасовку продукта
      */
     private static Item processItem(Element itemElement) {
-        int id = Integer.parseInt(itemElement.getAttribute("id"));
-        String volume = itemElement.getTextContent().trim();
-        return new Item(id, volume);
+        String idAttr = itemElement.getAttribute("id");
+        try {
+            int id = Integer.parseInt(idAttr);
+            String volume = itemElement.getTextContent().trim();
+            return new Item(id, volume);
+        } catch (NumberFormatException ex) {
+            String ctx = itemElement.getTextContent();
+            throw new RuntimeException("Неверный id у <item>: '" + idAttr + "'. Текст элемента: '" + ctx + "'.", ex);
+        }
     }
 
     /**
